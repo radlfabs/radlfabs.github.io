@@ -1,0 +1,1 @@
+{"Venloer Stra\u00dfe": {"best_params": {"eta": 0.8716277912327772, "gamma": 194, "max_depth": 24, "min_child_weight": 5, "max_delta_step": 63, "subsample": 0.88132214702823, "colsample_bytree": 0.8288830117350563, "reg_alpha": 829, "reg_lambda": 118}, "best_value": 21202.284463776527}}

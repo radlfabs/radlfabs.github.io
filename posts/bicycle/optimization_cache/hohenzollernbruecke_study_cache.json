@@ -1,0 +1,1 @@
+{"Hohenzollernbr\u00fccke": {"best_params": {"eta": 0.5152934644390248, "gamma": 4, "max_depth": 41, "min_child_weight": 7, "max_delta_step": 57, "subsample": 0.9805223182277154, "colsample_bytree": 0.6788712755741435, "reg_alpha": 111, "reg_lambda": 497}, "best_value": 16095.1711173566}}

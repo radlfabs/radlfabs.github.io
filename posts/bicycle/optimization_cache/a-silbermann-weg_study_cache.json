@@ -1,0 +1,1 @@
+{"A.-Silbermann-Weg": {"best_params": {"eta": 0.878292835103324, "gamma": 755, "max_depth": 47, "min_child_weight": 0, "max_delta_step": 84, "subsample": 0.2933796156570078, "colsample_bytree": 0.1308510384595195, "reg_alpha": 242, "reg_lambda": 643}, "best_value": 7609.717329888874}}
