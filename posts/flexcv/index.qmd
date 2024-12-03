@@ -1,0 +1,67 @@
+---
+title: "Flexible cross validation and machine learning for regression on tabular data"
+date: 2023-11-01
+author: Fabian Rosenthal
+categories: [development, cross-validation, OSS, Python]
+image: https://radlfabs.github.io/flexcv/images/step_1.svg
+execute: 
+  freeze: true
+---
+
+`flexcv` is a Python package that implements flexible cross validation and machine learning for tabular data. It provides a range of features for comparing machine learning models on different datasets with different sets of predictors, customizing just about everything around cross validations. It supports both fixed and random effects, as well as random slopes.
+
+`flexcv` originated from the need to perform nested cross validation on grouped data. While I wrote most of the code during my time as a student research assistant at Hochschule Düsseldorf, I have continued to maintain and improve the package as a private open-source-project. Moreover, I decided to release it with full documentation, project page on GitHub pages, and continuous integration and deployment using GitHub Actions. Have a look at the [project page](https://radlfabs.github.io/flexcv/)!
+
+The package is designed to be flexible and easy to use, with a focus on reproducibility and ease of use. It is built on top of popular machine learning libraries such as scikit-learn and pandas, and is designed to work seamlessly with these libraries.
+
+## Installation
+`flexcv` is on PyPI, so you can install it using pip:
+
+```
+pip install flexcv
+```
+
+## Usage
+Here is an example of how to use `flexcv` to perform nested cross validation on a regression problem. Let's first load the modules and generate some sample data:
+
+```{python }
+#| eval: false
+#| code-fold: false
+
+# import the class interface, data generator and model
+from flexcv import CrossValidation
+from flexcv.synthesizer import generate_regression
+from flexcv.models import LinearModel
+
+# make sample data
+X, y, group, _ = generate_regression(10, 100, noise_level=0.01)
+```
+
+Now the fun part about `flexcv` is its class interface. You can set up a complex configuration with just a few lines of code. Here is an example of how to set up a group cross validation with a linear model:
+```{python}
+#| eval: false
+#| code-fold: false
+
+# instantiate our cross validation class
+cv = CrossValidation()
+
+# now we can use method chaining to set up our configuration perform the cross validation
+results = (
+    cv
+    .set_data(X, y, group, dataset_name="ExampleData")
+    .set_splits(method_outer_split="GroupKFold", method_inner_split="KFold")
+    .add_model(LinearModel)
+    .perform()
+    .get_results()
+)
+
+# results has a summary property which returns a dataframe
+# we can simply call the pandas method "to_excel"
+results.summary.to_excel("my_cv_results.xlsx")
+
+```
+
+I decided to use method chaining in the core interface, to make it easy to set up the configuration and perform the cross validation without having to remember a bunch of classes and functions. This approach leverages IDE hints and completion to guide the user through the process.
+
+You can learn a bit more by checking out the conference poster [here](https://zenodo.org/records/14260131) and by visiting the [project page](https://radlfabs.github.io/flexcv/).
+ Feel free to reach out to me if you have any questions or suggestions, preferably using the [issue tracker](https://github.com/radlfabs/flexcv/issues).
