@@ -98,25 +98,11 @@
     "text": "Hi👋, I’m Fabian, a data scientist bridging machine learning and engineering.\nWith a M.Sc. in Media Technology, I specialize in developing robust machine learning solutions that perform reliably across simple and critical applications. My research on uncertainty quantification and cross-validation has equipped me with deep insights into performance estimation and statistical computing. I love package development and open-sourced a Python package for complex cross-validation workflows.\nMy interdisciplinary background—spanning audio engineering and data science—enables me to approach complex challenges with a holistic, end-to-end perspective. I’m passionate about working in cross-functional teams and collaborating with domain experts to deliver impactful solutions."
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "Fabian Rosenthal graduated as M.Sc. in media technology with focus on cross-functional data science and reliable machine learning. With expertise in uncertainty quantification, performance estimation, development of statistical software and a audio engineering background. Excited to tackle new interdisciplinary challenges with robust machine learning and statistics. Loves developing, learning and evolving in a team."
-  },
-  {
-    "objectID": "about.html#about-this-portfolio-page",
-    "href": "about.html#about-this-portfolio-page",
-    "title": "About",
-    "section": "About this portfolio page",
-    "text": "About this portfolio page\nThis website was built using the suggestions by Deepsha Menghani in a livestream on the Posit YouTube channel. The slides can be found here. This uses the amazing capabilities of Quarto to create a static website from markdown files."
-  },
-  {
     "objectID": "portfolio.html",
     "href": "portfolio.html",
     "title": "Portfolio",
     "section": "",
-    "text": "Hi👋, I’m Fabian, a data scientist and developer specializing in reliable machine learning, performance estimation, and uncertainty quantification. Read about my projects below or check out my resume.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nForecasting Bicycle Counts in Cologne\n\n\n\n\n\n\n\n\nDec 1, 2024\n\n\n35 min\n\n\n\n\n\n\n\n\n\n\n\n\nUncertainty quantification for cross-validation (Master Thesis Writeup)\n\n\n\n\n\n\n\n\nOct 1, 2024\n\n\n15 min\n\n\n\n\n\n\n\n\n\n\n\n\nFlexible cross validation and machine learning for regression on tabular data\n\n\n\n\n\n\n\n\nNov 1, 2023\n\n\n3 min\n\n\n\n\n\n\n\n\n\n\n\n\nSoundscape Visualization App - Explore participants in a diverse dataset!\n\n\n\n\n\n\n\n\nOct 1, 2023\n\n\n3 min\n\n\n\n\n\n\nNo matching items"
+    "text": "Forecasting Bicycle Counts in Cologne\n\n\n\n\n\n\n\n\nDec 1, 2024\n\n\n35 min\n\n\n\n\n\n\n\n\n\n\n\n\nUncertainty quantification for cross-validation (Master Thesis Writeup)\n\n\n\n\n\n\n\n\nOct 1, 2024\n\n\n15 min\n\n\n\n\n\n\n\n\n\n\n\n\nFlexible cross validation and machine learning for regression on tabular data\n\n\n\n\n\n\n\n\nNov 1, 2023\n\n\n3 min\n\n\n\n\n\n\n\n\n\n\n\n\nSoundscape Visualization App - Explore participants in a diverse dataset!\n\n\n\n\n\n\n\n\nOct 1, 2023\n\n\n3 min\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/flexcv/index.html",
