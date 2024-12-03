@@ -1,0 +1,68 @@
+```{=html}
+<table class="table-large">
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th style='text-align:center;'><span data-qmd="$\widehat{Cov}$ % (MCSE)"></span></th>
+      <th style='text-align:center;'><span data-qmd="$\widehat{w}$ (MCSE)"></span></th>
+      <th style='text-align:right;'><span data-qmd="$n_\text{sim}$"></span></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-top: 2px solid; border-bottom: 2px solid;">
+      <td colspan="4"><span data-qmd="AUC (0.66 ± 0.14) - $n_\text{obs}$ = 100"></span></td>
+    </tr>
+    <tr>
+      <td>GLMM-UG</td>
+      <td style='text-align:center;'>98.1 (0.13)</td>
+      <td style='text-align:center;'>0.607 (0.0019)</td>
+      <td style='text-align:right;'>11520</td>
+    </tr>
+    <tr>
+      <td>Param-CA-0.1-stud</td>
+      <td style='text-align:center;'>94.1 (0.04)</td>
+      <td style='text-align:center;'>0.496 (0.0003)</td>
+      <td style='text-align:right;'>360000</td>
+    </tr>
+    <tr>
+      <td>Boot-hier-stud</td>
+      <td style='text-align:center;'>93.2 (0.20)</td>
+      <td style='text-align:center;'>0.336 (0.0012)</td>
+      <td style='text-align:right;'>16312</td>
+    </tr>
+    <tr>
+      <td>Baseline</td>
+      <td style='text-align:center;'>77.5 (0.07)</td>
+      <td style='text-align:center;'>0.228 (0.0001)</td> 
+      <td style='text-align:right;'>360000</td>
+    </tr>
+    <tr style="border-top: 2px solid; border-bottom: 2px solid;">
+      <td colspan="4"><span data-qmd="AUC (0.75 ± 0.16) - $n_\text{obs}$ = 500"></span></td>
+    </tr>
+    <tr>
+      <td>GLMM-UG</td>
+      <td style='text-align:center;'>95.9 (0.19)</td>
+      <td style='text-align:center;'>0.312 (0.0017)</td>
+      <td style='text-align:right;'>11520</td>
+    </tr>
+    <tr>
+      <td>Param-CA-0.1-stud</td>
+      <td style='text-align:center;'>92.2 (0.04)</td>
+      <td style='text-align:center;'>0.182 (0.0001)</td>
+      <td style='text-align:right;'>360006</td>
+    </tr>
+    <tr>
+      <td>Boot-hier-stud</td>
+      <td style='text-align:center;'>91.3 (0.20)</td>
+      <td style='text-align:center;'>0.127 (0.0008)</td>
+      <td style='text-align:right;'>19155</td>
+    </tr>
+    <tr>
+      <td>Baseline</td>
+      <td style='text-align:center;'>79.5 (0.07)</td>
+      <td style='text-align:center;'>0.085 (0.0001)</td> 
+      <td style='text-align:right;'>360000</td>
+    </tr>
+  </tbody>
+</table>
+```

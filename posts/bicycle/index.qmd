@@ -1,0 +1,903 @@
+---
+title: "Forecasting Bicycle Counts in Cologne"
+date: 2024-12-01
+author: Fabian Rosenthal
+categories: [forecasting, open-data, geo-mapping, ML, Python]
+image: "image.png"
+---
+
+A reliable forecast of the bicycle traffic is an important indicator for planning and optimizing the infrastructure of a city. In this post, I will predict the bicycle traffic in Cologne based on counting data from local bicycle counting stations.
+
+Note: This project was originally part of the course Machine Learning and Scientific Computing at Technische Hochschule Köln. The project was a collaboration with [Felix Otte](https://www.linkedin.com/in/felix-otte/), who was responsible for model training and the evaluation of the models. I was responsible for data cleaning, exploration, and visualization. I did this write-up and performed re-runs of the original trainings. Also, I wrote the new class-based implementation of the model training and evaluation to ensure reproducibility with a full pipeline.
+
+### Introduction
+
+First, we import the modules we will use. Besides some modules from the Python standard library, we will use `polars` and `pandas` for data manipulation, `optuna` for hyperparameter optimization, and `sklearn`/`XGBoost` for the machine learning part. In the local `lookup` module, we have hardcoded some dictionaries that we will use to clean the data.
+
+```{python echo=FALSE collapse=TRUE}
+import logging
+import math
+import os
+import pickle
+import json
+import zipfile
+from datetime import datetime
+from pathlib import Path
+from pprint import pprint
+
+import geopandas as gpd
+import humanize
+import matplotlib.pyplot as plt
+import numpy as np
+import optuna
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objs as go
+import polars as pl
+import polars.selectors as cs
+import requests
+# import shap
+
+from adjustText import adjust_text
+from geopy.geocoders import Nominatim
+from great_tables import GT
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.compose import ColumnTransformer
+from sklearn.metrics import (mean_absolute_percentage_error,
+                             root_mean_squared_error)
+from sklearn.model_selection import TimeSeriesSplit, cross_val_score
+from sklearn.pipeline import Pipeline, make_pipeline
+from sklearn.preprocessing import (FunctionTransformer, MinMaxScaler,
+                                   OneHotEncoder, SplineTransformer)
+from xgboost import XGBRegressor
+
+from lookup import months_lookup, names_lookup
+from postcodes import postcodes
+```
+
+### Data Loading
+
+Let's define a function, that downloads the bicycle counting data from the open data portal of the city of Cologne. As the tables are not really consistent, we need to take care of the following cleaning steps:
+
+1. Ensure the German is correctly encoded. We have to rename them, because the encoding is not consistent.
+2. Replace the month names with integers to make conversion to `pl.Date` easier.
+3. Extract the year from the file name and add it as a column.
+4. Convert year and month to a `pl.Date` column.
+5. Remove rows that include yearly sums.
+6. Remove columns that have too few data points.
+7. Unpivot the data to have a long format.
+8. Cast the count column to `pl.Int64`.
+9. Drop rows with missing values. Some files even have blank rows in between.
+
+
+
+```{python echo=FALSE}
+def read_in(url):
+    expr = pl.col("month")
+    for old, new in months_lookup.items():
+        expr = expr.str.replace_all(old, new)
+
+    df = pd.read_csv(
+        url,
+        encoding='latin1',
+        thousands=".",
+        decimal=",",
+        sep=";", 
+        index_col=False,
+    )
+
+    df.rename(columns={ df.columns[0]: "month" }, inplace = True)
+    
+    return (
+        pl.DataFrame(df)
+        # .filter(~pl.all_horizontal(pl.all().is_null()))
+        .rename(names_lookup, strict=False)
+        .filter(pl.col("month") != "Jahressumme")
+        .with_columns(month = pl.col("month").str.replace(r"\d+", "").str.replace(" ", ""))
+        .with_columns(expr)
+        .with_columns(date = pl.date(pl.lit(int(url[-9:-5])), pl.col("month"), 1))
+        # .drop("month", "Hohe Pforte", "Neusser Straße", strict=False)
+        .unpivot(cs.numeric(), index="date", variable_name="location", value_name="count")
+        .cast({"count": pl.Int64})
+        .drop_nulls()
+    )
+
+def load_tables(urls):
+    return (
+        pl.concat([read_in(url) for url in urls], rechunk=True)
+        .with_columns(
+            location = pl.col("location").cast(pl.Categorical),
+            # quarter = pl.col("date").dt.quarter(),
+            # month = pl.col("date").dt.month(),
+            # days_from_start = (pl.col("date") - pl.col("date").min()).dt.total_days(),
+            # sin_month = (pl.col("date").dt.month() * 2 * math.pi / 24).sin()
+            )
+    )
+
+def get_yearly_sums(df):
+    return (
+        df
+        .with_columns(year = pl.col("date").dt.year())
+        .group_by("location", "year")
+        .agg(yearly_sum = pl.sum("count"))
+        .group_by("location")
+        .agg(yearly_sum_avg = pl.col("yearly_sum").mean().cast(pl.Int64))
+        .sort("yearly_sum_avg", descending=True)
+    )
+```
+
+We can use this in a list comprehension to download and concatenate all `.csv` files from the portal.
+The links are stored in a text file. So we will read it's lines first. The second part includes some feature engineering, that might get moved later on.
+
+```{python}
+working_dir_path = Path(".")
+links_file = working_dir_path / "links/links.txt"
+
+with open(links_file, "r") as f:
+    df = load_tables(f.readlines())
+
+yearly_sums = get_yearly_sums(df)
+
+```
+
+Let's have a look at the start dates of each location as well as the average yearly sums of bicycle counted at each location.
+
+```{python}
+GT(
+    (
+        df
+        .group_by("location")
+        .agg(pl.min("date").dt.strftime("%Y-%m").alias("active_since"))
+        .join(yearly_sums, on="location")
+        .sort("active_since")
+    )
+).cols_label(
+    location="Location",
+    active_since="Active Since",
+    yearly_sum_avg="Avg. Yearly Sum"
+)
+```
+
+```{python}
+fig, ax = plt.subplots(figsize=(8, 10))
+
+# create lollipop chart
+ax.hlines(y=yearly_sums["location"], xmin=0, xmax=yearly_sums["yearly_sum_avg"], color='navy')
+ax.plot(yearly_sums["yearly_sum_avg"], yearly_sums["location"], "o", markersize=8, color='navy')
+
+# set plot title and axis labels
+ax.set_title('Avg. Yearly Sums')
+ax.set_xlabel('Bicycles Counted in a Year')
+ax.set_ylabel('Location')
+
+# set y-axis limits and invert the y-axis
+ax.set_ylim(ax.get_ylim()[::-1])
+
+# hide top and right spines
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+
+# # add annotations for the counts
+for i, (count, loc) in enumerate(zip(yearly_sums["yearly_sum_avg"], yearly_sums["location"])):
+    ax.annotate(f"{int(count):}", xy=(count + 50000, i), va='center')
+
+# x-axis ticks
+ticks = [0, 500_000, 1_000_000, 1_500_000, 2_000_000]
+ticks_labels = ["0", "500k", "1M", "1.5M", "2M"]
+ax.set_xticks(ticks)
+ax.set_xticklabels(ticks_labels, fontsize=12)
+ax.grid(False)
+
+plt.tight_layout()
+plt.show()
+
+```
+
+### Spotlight "Zülpicher Straße"
+
+Zülpicher Straße is one of the first locations equipped with a counter, and counts the second most bicycles evcery year. We will plot the data with `plotly` to make it interactive. A trendline helps understand the general development of the counts.
+
+```{python}
+zuelpicher = (
+    df
+    .filter(pl.col("location") == "Zülpicher Straße").sort("date")
+    .to_pandas()
+)
+
+fig = px.scatter(
+    zuelpicher, x="date", y="count", 
+    title="Counts at Location Zülpicher Straße", 
+    trendline="ols", 
+    trendline_scope="overall",
+    template="simple_white")
+fig.add_scatter(x=zuelpicher["date"], y=zuelpicher["count"].rolling(1).mean(), mode='lines', name="Timeseries")
+fig.update_xaxes(title_text='Date')
+fig.update_yaxes(title_text='Bicycles Counted')
+fig.show()
+
+```
+
+### Draw Locations on a Map
+#### Scrape the Geolocation Data
+
+In order to draw the counting stations on a map, we need their locations. Since open data Cologne does not provide this information, we will use the `geopy` library to scrape the data from OpenStreetMap---specifically, we use the `Nominatim` geocoder. We will store the data in a dictionary and convert it to a `pd.DataFrame` for better handling. The call `geolocator.geocode(loc + ", Köln, Germany")` makes a request to the Nominatim API and returns the location of the adress. So this is only approximate, as the exact counter location may differ from the address.
+
+```{python cache=TRUE}
+geolocator = Nominatim(user_agent="myapp")
+
+coordinates = {}
+for loc in yearly_sums["location"].unique():
+    postcode = postcodes.get(loc, "")
+    tmp = geolocator.geocode(loc + f",{postcode} Köln, Germany")
+    coordinates[loc] = {
+        "latitude": tmp.latitude,
+        "longitude": tmp.longitude
+    }
+
+coord_df = pd.DataFrame(coordinates).T.reset_index().rename(columns={"index": "location"})
+
+counter_geo = pd.DataFrame(yearly_sums, columns=["location", "yearly_sums_avg"]).merge(coord_df, on="location")
+counter_geo["yearly_sums_avg"] = counter_geo["yearly_sums_avg"].astype("float64")
+
+```
+
+#### Plotting
+
+Now let's put everything together and make an interactive plot. We will use `plotly` to create a scattermapbox plot and a slider to switch between the dates. 
+
+```{python eval=FALSE}
+coord_pl = pl.DataFrame(coord_df)
+lon_mean = coord_pl["longitude"].mean()
+lat_mean = coord_pl["latitude"].mean()
+
+date_geo_df = (
+    df
+    .join(
+        coord_pl.with_columns(pl.col("location").cast(pl.Categorical)),
+        on="location", 
+        how="left"
+        )
+    .with_columns(
+        norm_count = 25 * pl.col("count") / pl.col("count").max(),
+        human_count = pl.col("count").map_elements(lambda s: humanize.intword(s), return_dtype=pl.String)
+    )
+    .select(pl.exclude("month", "quarter", "days_from_start", "sin_month"))
+    .sort("date")
+)
+
+# csv_file = Path("data") / "date_geo.csv"
+# if csv_file.exists():
+#     date_geo_df.write_csv(csv_file)
+
+n_dates = len(date_geo_df["date"].unique())
+
+fig = go.Figure()
+mask = [False] * n_dates
+
+steps = []
+for i, (date, data) in enumerate(date_geo_df.group_by("date")):
+
+    date = date[0].strftime("%Y-%m")
+    mask = [j == i for j in range(n_dates)]
+
+    trace = go.Scattermapbox(
+        lon=data["longitude"],
+        lat=data["latitude"],
+        mode='markers',
+        marker=dict(
+            color='darkred',
+            size=data['norm_count'],
+            sizemode='area',
+            sizeref=0.025,
+            sizemin=5
+        ),
+        hoverinfo='text',
+        hovertext=[f"Location: {loc}<br>Date: {date}<br>Count: {val}" 
+                   for loc, val in zip(data['location'], data['human_count'])],
+        visible=(i == 0),  # Only first trace visible by default
+        showlegend=False
+    )
+    fig.add_trace(trace)
+    
+    # Create slider step
+    step = dict(
+        method='update',
+        args=[{'visible': mask},
+              {'title': f'Cologne Bicycle Counter - {date}'}],
+        label=date
+    )
+    steps.append(step)
+
+# Configure slider
+sliders = [dict(
+    active=0,
+    currentvalue={"prefix": "Date: "},
+    pad={"t": 10},
+    ticklen=0,
+    minorticklen=0,
+    transition={
+        'duration': 10000,
+        'easing': 'circle-in-out'},
+    steps=steps
+)]
+
+# Update layout
+fig.update_layout(
+    mapbox_style="carto-positron", #"open-street-map",
+    mapbox=dict(
+        center=dict(
+            lon=lon_mean, 
+            lat=lat_mean
+        ),
+        zoom=11
+    ),
+    title='Cologne Bicycle Counter',
+    height=600,
+    width=600,
+    margin={"r":0,"t":50,"l":0,"b":0},
+    sliders=sliders
+)
+
+# Show the figure
+fig.show()
+```
+
+### Incorporating Weather Features
+
+We will scrape the weather data from the web and extract the files necessary. The data is then loaded into a `pl.DataFrame` and cleaned. We mainly do some renaming and type casting. Lastly, we deselect some columns that are not needed.
+
+```{python}
+
+weather_url = Path("links/weather.txt").read_text()
+data_path = Path("data")
+zip_path = data_path / "weather.zip"
+data_path.mkdir(exist_ok=True)
+
+response = requests.get(weather_url)
+with open(zip_path, 'wb') as file:
+    file.write(response.content)
+
+with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+    zip_ref.extractall(data_path)
+
+weather_csv = [os.path.join(data_path, f) for f in os.listdir(data_path) if 'produkt' in f][0]
+
+weather_df = (
+    pl.read_csv(
+        weather_csv, 
+        separator=";", 
+        has_header=True,
+        schema=pl.Schema(
+            {
+                "station_id": pl.Int64,
+                "date_begin": pl.String,
+                "date_end": pl.Int64,
+                "qn_4": pl.Int64,
+                "sky_cov": pl.Float64,
+                "air_temp_daymean_month_mean": pl.Float64,
+                "air_temp_daymax_month_mean": pl.Float64,
+                "air_temp_daymin_month_mean": pl.Float64,
+                "air_temp_daymax_month_max": pl.Float64,
+                "air_temp_daymin_month_min": pl.Float64,
+                "wind_speed_month_mean": pl.Float64,  # MO_FK
+                "wind_speed_daymax_month_max": pl.Float64,  # MX_FX
+                "sunshine_duration": pl.Float64,  # MO_SD_S
+                "QN_6": pl.Int64,
+                "precipitation_month_sum": pl.Float64,
+                "precipitation_daymax_month_max": pl.Float64,
+                "eor": pl.String
+            }
+        )
+        )
+        .with_columns(
+            date = pl.col("date_begin").str.to_date(format="%Y%m%d")
+        )
+        .select(pl.col("date"), cs.numeric())
+        .select(cs.exclude("qn_4", "eor", "QN_6", "station_id", "date_end"))
+)
+
+GT(weather_df.sample(10))
+```
+
+```{python}
+weather_detail = (
+    weather_df
+    .filter(pl.col("date") >= zuelpicher["date"].min())
+    .filter(pl.col("date") <= zuelpicher["date"].max())
+    .to_pandas()
+)
+
+fig = px.scatter(
+    weather_detail, x="date", y="air_temp_daymean_month_mean", 
+    title="Daily Average Air Temperature (Monthly Mean) vs. Date", 
+    trendline="ols", 
+    trendline_scope="overall",
+    template="simple_white")
+fig.add_scatter(x=weather_detail["date"], y=weather_detail["air_temp_daymean_month_mean"].rolling(1).mean(), mode='lines', name="Timeseries")
+# axes titles
+fig.update_xaxes(title_text='Date')
+fig.update_yaxes(title_text='Air Temp. [°C]')
+fig.show()
+
+```
+
+### Merging the Data
+
+We merge the weather data with the bicycle counts. We will use a left join, because we want to keep all the bicycle counts. In a second step, we will split the data into a training and a test set. The data from year 2022
+will be used for testing, only. We can split the data by filtering the `date` column.
+
+```{python}
+ml_data = df.join(weather_df, on="date", how="left")
+train_data = ml_data.filter(pl.col("date") < datetime(2022, 1, 1))
+test_data = ml_data.filter(pl.col("date") >= datetime(2022, 1, 1))
+```
+
+### Machine Learning
+
+Next up is the fun part: Actual Machine Learning! In this project, we will use the XGBoost regression model. We will use `Optuna` to sample hyperparameters and cross-validate them with the `TimeSeriesSplit`.
+
+#### Feature Engineering
+
+Let's define some `sklearn` transformers to perform feature engineering. We will create a `ColumnTransformer` that will be used in a `Pipeline`.
+
+```{python}
+ts_cv = TimeSeriesSplit(
+    n_splits=5,
+    gap=2,
+    test_size=6
+    )
+
+class QuarterTransformer(BaseEstimator, TransformerMixin):
+    def __init__(self, date_column='date'):
+        self.date_column = date_column
+    
+    def fit(self, X, y=None):
+        return self
+    
+    def transform(self, X):
+        if isinstance(X, np.ndarray):
+            X = pd.DataFrame(X)
+        dates = X[self.date_column]
+        dates = pd.to_datetime(dates)
+
+        quarter_columns = []
+        quarter_conditions = [
+            (dates.dt.month <= 3),
+            ((dates.dt.month > 3) & (dates.dt.month <= 6)),
+            ((dates.dt.month > 6) & (dates.dt.month <= 9)),
+            (dates.dt.month > 9)
+        ]
+        quarter_names = ['Q1', 'Q2', 'Q3', 'Q4']
+        
+        for name, condition in zip(quarter_names, quarter_conditions):
+            quarter_columns.append(condition.astype(int))
+
+        # Combine all new features
+        new_features = np.column_stack(quarter_columns)
+        
+
+        return new_features
+    
+    def get_feature_names_out(self, input_features=None):
+        return ['Q1', 'Q2', 'Q3', 'Q4']
+
+
+class MonthTransformer(BaseEstimator, TransformerMixin):
+    def __init__(self, date_column='date'):
+        self.date_column = date_column
+    
+    def fit(self, X, y=None):
+        return self
+    
+    def transform(self, X):
+        if isinstance(X, np.ndarray):
+            X = pd.DataFrame(X)
+        dates = X[self.date_column]
+        dates = pd.to_datetime(dates)
+
+        month_column = dates.dt.month
+        
+        # Combine all new features
+        new_features = month_column.to_numpy().reshape(-1, 1)
+        
+        return new_features
+    
+    def get_feature_names_out(self, input_features=None):
+        return ['month']
+
+
+def sin_transformer(period=24):
+    return FunctionTransformer(lambda x: np.sin(x * 2 * np.pi / period))
+
+
+def periodic_spline_transformer(period, n_splines=None, degree=3):
+    if n_splines is None:
+        n_splines = period
+    n_knots = n_splines + 1  # periodic and include_bias is True
+    return SplineTransformer(
+        degree=degree,
+        n_knots=n_knots,
+        knots=np.linspace(0, period, n_knots).reshape(n_knots, 1),
+        extrapolation="periodic",
+        include_bias=True,
+    )
+
+
+def make_feature_transformer(X):
+    numerical_columns = X.select_dtypes(include=np.number).columns.tolist()
+    categorical_columns = X.select_dtypes(include=['object', 'category']).columns.tolist()
+
+    spline_pipeline = Pipeline(
+        steps=[
+            ('month_transformer', MonthTransformer()),
+            ('cyclic_hour', periodic_spline_transformer(12, n_splines=6))
+        ]
+    )
+
+    sin_pipeline = Pipeline(
+        steps=[
+            ('month_transformer', MonthTransformer()),
+            ('sine_transformer', sin_transformer(24))
+        ]
+    )
+
+    col_transformer = ColumnTransformer(
+        transformers=[
+            ('quarter_transformer', QuarterTransformer(), ['date']),
+            ('month_transformer', MonthTransformer(), ['date']),
+            ('sin_transformer', sin_pipeline, ['date']),
+            ('spline_transformer', spline_pipeline, ['date']),
+            ('num_scale', MinMaxScaler(), numerical_columns),
+            ('cat_encode', OneHotEncoder(handle_unknown='ignore'), categorical_columns)
+        ],
+        remainder="passthrough",
+        verbose_feature_names_out=False
+    )
+    return col_transformer
+```
+
+#### Tuning objective
+Next we will define a custom objective function, that we want to minimize. The function will be called by Optuna and will return the negative RMSE of the cross-validated model. We will use the `XGBRegressor` from `XGBoost` as the model. We will use the `make_feature_transformer` function to create a `ColumnTransformer` that will be used in the `sklearn` `Pipeline`.
+
+```{python}
+def objective(trial, X_train, y_train):
+
+    numerical_columns = X_train.select_dtypes(include=np.number).columns.tolist()
+    col_transformer = make_feature_transformer(X_train)
+
+    xgbr = XGBRegressor(
+            n_estimators=2000,
+            # n_estimators=trial.suggest_int("n_estimators", 100, 2000),
+            learning_rate=trial.suggest_float("eta", 0.0001, 1),
+            gamma=trial.suggest_int('gamma', 0, 1000),
+            max_depth=trial.suggest_int("max_depth", 1, 50),
+            min_child_weight=trial.suggest_int('min_child_weight', 0, 100),
+            max_delta_step=trial.suggest_int('max_delta_step', 0, 100),
+            subsample=trial.suggest_float('subsample', 0, 1),
+            colsample_bytree=trial.suggest_float('colsample_bytree', 0, 1),
+            reg_alpha=trial.suggest_int('reg_alpha', 0, 1000),
+            reg_lambda=trial.suggest_int('reg_lambda', 0, 1000),
+            enable_categorical=True,
+            random_state=42,
+        )
+
+    pipeline = make_pipeline(col_transformer, xgbr)
+
+    cv_score = cross_val_score(
+        pipeline,
+        X=X_train,
+        y=y_train,
+        cv=ts_cv,
+        scoring="neg_root_mean_squared_error",
+    )
+
+    return -cv_score.mean()
+```
+
+#### The Predictor Class
+
+Due to the data structure, we want to map a special model which is specialized on predicing the bicycle counts for a single location. This can be achieved by a little bit of object oriented programming. We will define a class `BicyclePredictor` that will hold the models. The class will have methods for tuning, refitting, and predicting. The class will also allow us to make plots.
+
+```{python}
+
+class BicyclePredictor():
+    def __init__(self, fixed_params=None, cache_dir='optimization_cache'):
+        if fixed_params is None:
+            fixed_params = {
+                "n_estimators": 2000,
+                "enable_categorical": True,
+                "random_state": 42
+            }
+        self.cache_dir = cache_dir
+        os.makedirs(cache_dir, exist_ok=True)
+        self.fixed_params = fixed_params
+        self.is_fitted = False
+    
+    def set_objective(self, objective):
+        self.objective = objective
+
+    def set_fixed_params(self, fixed_params):
+        self.fixed_params = fixed_params
+
+    def set_studies(self, studies):
+        self.studies = studies
+
+    def _make_writable_string(self, location):
+        return (
+            location
+            .lower()
+            .replace(".", "")
+            .replace(" ", "_")
+            .replace("ü", "ue")
+            .replace("ö", "oe")
+            .replace("ä", "ae")
+            .replace("ß", "ss")
+        )
+
+    def _get_cache_path(self, location):
+        """Generate a cache file path for a specific location."""
+        return os.path.join(self.cache_dir, f"{location}_study_cache.json")
+    
+    def _save_study_cache(self, location, study_data):
+        """Save study results to a JSON cache file."""
+        cache_path = self._get_cache_path(location)
+        with open(cache_path, 'w') as f:
+            json.dump(study_data, f)
+    
+    def _load_study_cache(self, location):
+        """Load cached study results for a location."""
+        cache_path = self._get_cache_path(location)
+        if os.path.exists(cache_path):
+            with open(cache_path, 'r') as f:
+                return json.load(f)
+        return None
+
+    def _save_failed_cache(self, failed_studies):
+        """Save failed studies to a JSON cache file."""
+        cache_path = os.path.join(self.cache_dir, "failed_studies.json")
+        with open(cache_path, 'w') as f:
+            json.dump(failed_studies, f)
+    
+    def _load_failed_cache(self):
+        """Load failed studies from a JSON cache file."""
+        cache_path = os.path.join(self.cache_dir, "failed_studies.json")
+        if os.path.exists(cache_path):
+            with open(cache_path, 'r') as f:
+                return json.load(f)
+        return {}
+
+    def tune(self, train_data, n_trials=200, use_stored=False):
+        metrics = {}
+        succesful_studies = {}
+        failed_studies = {} if not use_stored else self._load_failed_cache()
+
+        for location, group in train_data.group_by('location'):
+            location = location[0]
+
+            if location in failed_studies.keys():
+                continue
+            
+            loc_str = self._make_writable_string(location)
+            # Check if we can use stored results
+            if use_stored:
+                cached_study = self._load_study_cache(loc_str)
+                if cached_study:
+                    inner_dict = cached_study[location]
+                    succesful_studies[location] = inner_dict['best_params']
+                    metrics[location] = inner_dict['best_value']
+                    continue
+            
+            X_train = group.drop("count").to_pandas()
+            y_train = group["count"]
+            objective_partial = lambda trial: self.objective(trial, X_train, y_train)
+            study = optuna.create_study(direction="minimize")
+            
+            try:
+                study.optimize(objective_partial, n_trials=n_trials)
+                succesful_studies[location] = study.best_trial.params
+                metrics[location] = study.best_trial.value
+
+                self._save_study_cache(
+                    loc_str, 
+                    {
+                        location:
+                        {
+                        'best_params': study.best_trial.params,
+                        'best_value': study.best_trial.value
+                        }
+                    }
+                    )
+            except ValueError as e:
+                failed_studies[location] = str(e)
+
+        self.succesful_studies = succesful_studies
+        self.metrics = metrics
+
+        # find location with the min mape in the dict
+        self.best_location = pd.Series(metrics).idxmin()
+        best_params = succesful_studies[self.best_location]
+
+        for location in failed_studies.keys():
+            self.succesful_studies[location] = best_params
+            self._save_study_cache(
+                self._make_writable_string(location),
+                {
+                    location: {
+                        'best_params': best_params,
+                        'best_value': metrics[self.best_location]
+                    }
+                }
+            )
+        self.failed_studies = failed_studies
+        self._save_failed_cache(failed_studies)
+
+
+    def _refit_inner(self, train_data, location):
+        X_train = train_data.drop("count").to_pandas()
+        y_train = train_data["count"]
+
+        pipe = make_pipeline(
+            make_feature_transformer(X_train),
+            XGBRegressor(
+                **self.succesful_studies[location],
+                **self.fixed_params
+            )
+        )
+        return pipe.fit(X_train, y_train)
+
+    def refit(self, train_data):
+        # first refit the baseline model
+        self._baseline_pipe = self._refit_inner(train_data, self.best_location)
+        self._pipeline_dict = {}
+        # fit location specific models
+        for location, data in self.succesful_studies.items():
+            self._pipeline_dict[location] = self._refit_inner(
+                train_data=train_data.filter(pl.col("location") == location),
+                location=location
+            )
+        self.is_fitted = True
+
+    def check_fitted(self):
+        if not self.is_fitted:
+            raise ValueError("Model has not been fitted yet.")
+        return True
+
+    def predict(self, X_test, loc_str=""):
+        self.check_fitted()
+        # return the specific model when available, otherwise the baseline model
+        # and make predictions
+        return self._pipeline_dict.get(loc_str, self._baseline_pipe).predict(X_test)
+
+    def eval(self, test_data):
+        self.check_fitted()
+        metrics_by_location = {}
+        for location, group in test_data.group_by('location'):
+            location = location[0]
+            X_test = group.drop("count").to_pandas()
+            y_test = group["count"]
+            y_pred = self.predict(X_test, location)
+
+            metrics_by_location[location] = {
+                "rmse": np.round(root_mean_squared_error(y_test, y_pred)),
+                "mape": np.round(mean_absolute_percentage_error(y_test, y_pred), 2)
+            }
+
+        return (
+            pl.DataFrame(
+                pd.DataFrame(metrics_by_location).T
+                .reset_index()
+                .rename(columns={"level_0": "location", "index": "location"})
+            )
+            .with_columns(
+                pl.col("location").is_in(self.succesful_studies.keys()).not_().alias("baseline"),
+                pl.col("location").cast(pl.Categorical).alias("location"),
+                pl.col("rmse").cast(pl.Int64).alias("rmse"),
+            )
+            .join(
+                test_data
+                .group_by("location")
+                .agg(pl.col("count").mean().cast(pl.Int64).alias("count"))
+                .filter(pl.col("location").is_in(metrics_by_location.keys()))
+                , on="location"
+                )
+            .sort("mape")
+        )
+
+    def get_pipeline(self, loc_str):
+        return self._pipeline_dict.get(loc_str, self._baseline_pipe)
+    
+    def plot_predictions(self, data, loc_str):
+        import os
+
+        if not os.path.exists("images"):
+            os.mkdir("images")
+
+        self.check_fitted()
+        X_test = data.filter(data["location"] == loc_str).drop("count").to_pandas()
+        y_test = data.filter(data["location"] == loc_str)["count"].to_pandas()
+        y_pred = self.predict(X_test, loc_str)
+
+        combined = pd.DataFrame({"date": X_test["date"], "count": y_test, "pred": y_pred})
+
+        fig = px.line(
+            combined, x="date", y=["count", "pred"], 
+            title=f"Counter {loc_str}", 
+            template="simple_white")
+        fig.update_xaxes(title_text='Date')
+        fig.update_yaxes(title_text='Count')
+        # fig.write_image(f"images/{loc_str}.png")
+        fig.show()
+
+```
+
+As all necessary boilerplate code is already written in the `BicyclePredictor` class, we can now use it with very little code.
+```{python cache=TRUE}
+
+ml_pipeline = BicyclePredictor()
+ml_pipeline.set_objective(objective)
+ml_pipeline.set_fixed_params({
+    "n_estimators": 2000,
+    "enable_categorical": True,
+    "random_state": 42
+})
+ml_pipeline.tune(train_data, n_trials=200, use_stored=True)
+ml_pipeline.refit(train_data)
+```
+
+## Evaluation
+Finally, we can evaluate the tuned pipeline of transformers and models on the evaluation data of the yet unseen year 2022.
+
+```{python}
+metrics_df = ml_pipeline.eval(test_data)
+
+(
+    GT(metrics_df)
+    .tab_header("Metrics on Holdout Data")
+    .cols_label(location="Location", rmse="RMSE", mape="MAPE", count="Avg. Monthly Count")
+    .cols_move("count", after="location")
+)
+
+```
+
+#### Plot the Predictions vs Actual Counts
+
+First, let's start with some location that did really bad:
+
+```{python}
+ml_pipeline.plot_predictions(test_data, "Bonner Straße")
+ml_pipeline.plot_predictions(test_data, "Severinsbrücke")
+```
+
+While our model for Severinsbrücke seems to show the seasonal pattern, it is not able to predict the peaks with the correct magnitude. The model for Bonner Straße is not able to capture the trend at all. Let's have a look at the best location, on the other hand:
+
+```{python}
+ml_pipeline.plot_predictions(test_data, "Zülpicher Straße")
+ml_pipeline.plot_predictions(test_data, "Hohe Pforte")
+ml_pipeline.plot_predictions(test_data, "Venloer Straße")
+# def shap_single_loc(loc_str, data, pipeline_dict):
+#     data = data.filter(data["location"] == loc_str)
+#     features = data.drop("count").to_pandas()
+#     data = (
+#         data
+#         .with_columns(
+#             pl.Series(pipeline_dict[loc_str].predict(features)).alias("pred")
+#         )
+#         .sort("date")
+#     )
+
+#     pipe = pipeline_dict[loc_str]
+
+#     pred = model.predict(features, output_margin=True)
+
+#     explainer = shap.TreeExplainer(pipe["xgbregressor"])
+#     explanation = explainer(pipe["columntransformer"].transform(features))
+
+#     shap_values = explanation.values
+#     # make sure the SHAP values add up to marginal predictions
+#     print(f"Max(Abs(ShapValues + BaseValues - Preds)) = {np.abs(shap_values.sum(axis=1) + explanation.base_values - pred).max()}")
+#     shap.plots.beeswarm(explanation)
+
+# shap_single_loc("Zülpicher Straße", test_data, pipeline_dict)
+# shap_single_loc("Bonner Straße", test_data, pipeline_dict)
+# shap_single_loc("Severinsbrücke", test_data, pipeline_dict)
+```
