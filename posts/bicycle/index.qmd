@@ -8,11 +8,25 @@ image: "image.png"
 
 A reliable forecast of the bicycle traffic is an important indicator for planning and optimizing the infrastructure of a city. In this post, I will predict the bicycle traffic in Cologne based on counting data from local bicycle counting stations.
 
-Note: This project was originally part of the course Machine Learning and Scientific Computing at Technische Hochschule Köln. The project was a collaboration with [Felix Otte](https://www.linkedin.com/in/felix-otte/), who was responsible for model training and the evaluation of the models. I was responsible for data cleaning, exploration, and visualization. I did this write-up and performed re-runs of the original trainings. Also, I wrote the new class-based implementation of the model training and evaluation to ensure reproducibility with a full pipeline.
+This project was originally part of the course Machine Learning and Scientific Computing at TH Köln and I worked on it in collaboration with my friend and collegue [Felix Otte](https://www.linkedin.com/in/felix-otte/). While Felix supervised the model trainings and the evaluation of the models, I was responsible for data cleaning, exploration, and visualization. For this writeup, I performed re-runs of the original trainings and added a new class-based implementation of the whole pipeline that is closer to something useful in production.
+
+This projects showcases the following skills:
+
+- Understanding data sets and their issues
+- Achieving data consistency through cleaning and transformation
+- Applying appropriate data packages
+- Getting most of the data with feature engineering
+- Incorporating other available sources with scraping and geocoding
+- Efficient optimizazion of hyperparameters with Optuna
+- Handling multiple models with OOP in Python
+- Visualization of results
 
 ### Introduction
 
-First, we import the modules we will use. Besides some modules from the Python standard library, we will use `polars` and `pandas` for data manipulation, `optuna` for hyperparameter optimization, and `sklearn`/`XGBoost` for the machine learning part. In the local `lookup` module, we have hardcoded some dictionaries that we will use to clean the data.
+To make cycling in a bigger city more attractive and safe, the infrastructure has to keep up with the demand of it's users. The city of Cologne has installed several bicycle counting stations to monitor the traffic. The data is available on the open data portal of the city. As a former bike messenger, I directly sympathized with this data set and found it fun to work with. However, the data quality is not perfect and the data is not consistent across the different stations. So we have to be a bit careful at times.
+
+This project showcases forecasting future bicycle demands by using an XGBoost machine learning model that is trained on the timeseries of former counts as well as weather data. We will train specific models, that are specialized on predicting the counts for a single location as well as fallback/baseline versions, that can be used to predict demands in new locations. With this technique we can hopefully make accurate predictions for both longer existing stations as well as new ones, that are opened at the time of the prediction. 
+
 
 ```{python echo=FALSE collapse=TRUE}
 import logging
@@ -56,8 +70,7 @@ from postcodes import postcodes
 ```
 
 ### Data Loading
-
-Let's define a function, that downloads the bicycle counting data from the open data portal of the city of Cologne. As the tables are not really consistent, we need to take care of the following cleaning steps:
+Package-wise we will use `polars` and `pandas` for data manipulation, `optuna` for hyperparameter optimization, and `sklearn`/`XGBoost` for the machine learning part. Let's also define a function, that downloads the bicycle counting data from the open data portal of the city of Cologne. As the tables are not really consistent, we need to take care of the following cleaning steps:
 
 1. Ensure the German is correctly encoded. We have to rename them, because the encoding is not consistent.
 2. Replace the month names with integers to make conversion to `pl.Date` easier.
@@ -901,3 +914,7 @@ ml_pipeline.plot_predictions(test_data, "Venloer Straße")
 # shap_single_loc("Bonner Straße", test_data, pipeline_dict)
 # shap_single_loc("Severinsbrücke", test_data, pipeline_dict)
 ```
+
+## Future Extensions
+
+As a future addition, we can use the quantile regression feature of the XGBoost model to predict the upper and lower bounds of the counts. This can be useful for planning purposes and to get a better understanding of the uncertainty of the predictions. 
