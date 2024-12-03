@@ -118,7 +118,6 @@ Completed time-critical and valuable deliveries in all weather conditions while 
 
 ## Projects
 
-::: {layout-ncol=2}
 ### flexcv 
 **University of Applied Sciences Düsseldorf & Private Project**
 
@@ -126,33 +125,26 @@ Completed time-critical and valuable deliveries in all weather conditions while 
 - Enables reproducible multimodel workflows with few lines of code.
 - Released and maintained as OSS using GitHub Actions (CI/CD).
 - [Project page](https://radlfabs.github.io/flexcv/)
-:::
 
-::: {layout-ncol=2}
 ### Time Series Forecasting
 **University of Applied Sciences Cologne**
 
 - Prediction of open bicycle counter data for Cologne and benchmarking of ML-algorithms with time series cross-validation.
 - Fine-tuned XGBoost with external weather data and seasonal trends beats the best linear models.
-:::
 
-::: {layout-ncol=2}
 ### GridNet White Balance
 **University of Applied Sciences Cologne**
 
 - Achieved improvement in color consistency metrics with GridNet.
 - Deployed the model within a custom camera pipeline.
 - Strong communication and co-operation in a 5-person team.
-:::
 
-::: {layout-ncol=2}
 ### Soundscape Viz App 
 **University of Applied Sciences Cologne**
-
 - Interactive app visualizing survey data on individual levels.
 - Enables intuitive exploration of the diversity of participants.
 - Deployed [here](https://connect.posit.cloud/radlfabs/content/0191eac2-9bd9-4add-accd-00963fed370f) on the Posit Connect Cloud.
-:::
+
 
 ## Education
 
