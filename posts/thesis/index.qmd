@@ -210,6 +210,10 @@ To keep this short, here are the key findings of my thesis:
 -   Run hierarchical bootstrap with higher $n_\text{sim}$.
 -   Find hyperparameter strategy for the correlation approximation.
 
+## My thesis in numbers
+
+During the main simulation, 1440 scenarios (12 DGP $\times$ 2 sample sizes $\times$ 3 learning algorithms $\times$ 20 configurations) are repeated 500 times resulting in $720000$ ML unique jobs. In each job, the learning algorithm was trained 5 times in the CV and once on the available data set. This corresponds to $4.32 \times 10^6$ model fits. All trained models are used to predict on the population data set, resulting in $1.728\times 10^{11}$ predictions on the population data set. The table of validation predictions from CV has $2.16\times 10^8$ rows. After running the uncertainty quantification methods, the results table containing all the confidence intervals has 74 million rows.
+The study ran on two nodes of a high performance computing cluster. The `data.table`, `mlr3`, `batchtools`, `snow`, and `arrow` packages were used to manage the extreme computational load and the memory demands during asynchronuous parallel processing. 
 
 ## References
 
