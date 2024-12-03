@@ -102,7 +102,7 @@
     "href": "portfolio.html",
     "title": "Portfolio",
     "section": "",
-    "text": "Forecasting Bicycle Counts in Cologne\n\n\n\n\n\n\n\n\nDec 1, 2024\n\n\n35 min\n\n\n\n\n\n\n\n\n\n\n\n\nUncertainty quantification for cross-validation (Master Thesis Writeup)\n\n\n\n\n\n\n\n\nOct 1, 2024\n\n\n15 min\n\n\n\n\n\n\n\n\n\n\n\n\nFlexible cross validation and machine learning for regression on tabular data\n\n\n\n\n\n\n\n\nNov 1, 2023\n\n\n3 min\n\n\n\n\n\n\n\n\n\n\n\n\nSoundscape Visualization App - Explore participants in a diverse dataset!\n\n\n\n\n\n\n\n\nOct 1, 2023\n\n\n3 min\n\n\n\n\n\n\nNo matching items"
+    "text": "Forecasting Bicycle Counts in Cologne\n\n\n\n\n\n\n\n\nDec 1, 2024\n\n\n35 min\n\n\n\n\n\n\n\n\n\n\n\n\nUncertainty quantification for cross-validation (Master Thesis Writeup)\n\n\n\n\n\n\n\n\nOct 1, 2024\n\n\n16 min\n\n\n\n\n\n\n\n\n\n\n\n\nFlexible cross validation and machine learning for regression on tabular data\n\n\n\n\n\n\n\n\nNov 1, 2023\n\n\n3 min\n\n\n\n\n\n\n\n\n\n\n\n\nSoundscape Visualization App - Explore participants in a diverse dataset!\n\n\n\n\n\n\n\n\nOct 1, 2023\n\n\n3 min\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/flexcv/index.html",
@@ -180,6 +180,13 @@
     "title": "Uncertainty quantification for cross-validation (Master Thesis Writeup)",
     "section": "Future research",
     "text": "Future research\n\nBraschel et al. (2016): higher number of clusters in the data increases coverage.\nTest hierarchical bootstrap with different number of folds.\nRun hierarchical bootstrap with higher \\(n_\\text{sim}\\).\nFind hyperparameter strategy for the correlation approximation."
+  },
+  {
+    "objectID": "posts/thesis/index.html#my-thesis-in-numbers",
+    "href": "posts/thesis/index.html#my-thesis-in-numbers",
+    "title": "Uncertainty quantification for cross-validation (Master Thesis Writeup)",
+    "section": "My thesis in numbers",
+    "text": "My thesis in numbers\nDuring the main simulation, 1440 scenarios (12 DGP \\(\\times\\) 2 sample sizes \\(\\times\\) 3 learning algorithms \\(\\times\\) 20 configurations) are repeated 500 times resulting in \\(720000\\) ML unique jobs. In each job, the learning algorithm was trained 5 times in the CV and once on the available data set. This corresponds to \\(4.32 \\times 10^6\\) model fits. All trained models are used to predict on the population data set, resulting in \\(1.728\\times 10^{11}\\) predictions on the population data set. The table of validation predictions from CV has \\(2.16\\times 10^8\\) rows. After running the uncertainty quantification methods, the results table containing all the confidence intervals has 74 million rows. The study ran on two nodes of a high performance computing cluster. The data.table, mlr3, batchtools, snow, and arrow packages were used to manage the extreme computational load and the memory demands during asynchronuous parallel processing."
   },
   {
     "objectID": "posts/thesis/index.html#references",

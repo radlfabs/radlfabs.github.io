@@ -244,6 +244,7 @@ window.Quarto = {
   <li><a href="#key-findings" id="toc-key-findings" class="nav-link" data-scroll-target="#key-findings">Key findings</a></li>
   </ul></li>
   <li><a href="#future-research" id="toc-future-research" class="nav-link" data-scroll-target="#future-research">Future research</a></li>
+  <li><a href="#my-thesis-in-numbers" id="toc-my-thesis-in-numbers" class="nav-link" data-scroll-target="#my-thesis-in-numbers">My thesis in numbers</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
@@ -515,6 +516,10 @@ g(\mathbb{E}[Y|u_{k}])=Zu_{k}+\epsilon_{k}
 <li>Run hierarchical bootstrap with higher <span class="math inline">\(n_\text{sim}\)</span>.</li>
 <li>Find hyperparameter strategy for the correlation approximation.</li>
 </ul>
+</section>
+<section id="my-thesis-in-numbers" class="level2">
+<h2 class="anchored" data-anchor-id="my-thesis-in-numbers">My thesis in numbers</h2>
+<p>During the main simulation, 1440 scenarios (12 DGP <span class="math inline">\(\times\)</span> 2 sample sizes <span class="math inline">\(\times\)</span> 3 learning algorithms <span class="math inline">\(\times\)</span> 20 configurations) are repeated 500 times resulting in <span class="math inline">\(720000\)</span> ML unique jobs. In each job, the learning algorithm was trained 5 times in the CV and once on the available data set. This corresponds to <span class="math inline">\(4.32 \times 10^6\)</span> model fits. All trained models are used to predict on the population data set, resulting in <span class="math inline">\(1.728\times 10^{11}\)</span> predictions on the population data set. The table of validation predictions from CV has <span class="math inline">\(2.16\times 10^8\)</span> rows. After running the uncertainty quantification methods, the results table containing all the confidence intervals has 74 million rows. The study ran on two nodes of a high performance computing cluster. The <code>data.table</code>, <code>mlr3</code>, <code>batchtools</code>, <code>snow</code>, and <code>arrow</code> packages were used to manage the extreme computational load and the memory demands during asynchronuous parallel processing.</p>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
