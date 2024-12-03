@@ -80,35 +80,45 @@ Data scientist and developer. With my engineering background, I bring a cross-di
 
 ::: {layout-ncol=2}
 ### Student Research Assistant
-**Fraunhofer MEVIS (Bremen)** | *02/2024 -- 08/2024*
+
+Fraunhofer MEVIS (Bremen) | *02/2024 -- 08/2024*
 
 - Developed statistical R-packages with uncertainty quantification techniques, giving clinicians a more robust understanding of ML models.
 - Designed unified APIs with consistent code styling and good unit tests.
-
 :::
 
+::: {layout-ncol=2}
 ### Student Research Assistant
-**University of Applied Sciences Düsseldorf** | *09/2020 -- 10/2023*
+
+University of Applied Sciences Düsseldorf | *09/2020 -- 10/2023*
 
 - Co-published a data set with soundscapes from 100+ participants.
 - Performed data and feature engineering on 6000+ audio recordings.
 - Saved days of compute by employing a faster hyperparameter tuning.
 - Introduced a solution to keep track of 1000+ experiments.
 - Keynotes and posters on the use of stats & ML in acoustic research.
+:::
 
+::: {layout-ncol=2}
 ### Video Recording Producer
-**WDR (Köln)** | *09/2020 -- 02/2022*
+
+WDR (Köln) | *09/2020 -- 02/2022*
 
 - Called cameras for live-streaming concerts in a musically sensible way.
 - Led technical teams and communicated cinematographic ideas efficiently.
+:::
 
-### Bike Messenger 
-**Self-employed (Düsseldorf)** | *11/2016 -- 09/2020*
+::: {layout-ncol=2}
+### Bike Messenger
 
-- Completed time-critical and valuable deliveries in all weather conditions while optimizing complex urban routes in real-time.
+Self-employed (Düsseldorf) | *11/2016 -- 09/2020*
+
+Completed time-critical and valuable deliveries in all weather conditions while optimizing complex urban routes in real-time.
+:::
 
 ## Projects
 
+::: {layout-ncol=2}
 ### flexcv 
 **University of Applied Sciences Düsseldorf & Private Project**
 
@@ -116,26 +126,33 @@ Data scientist and developer. With my engineering background, I bring a cross-di
 - Enables reproducible multimodel workflows with few lines of code.
 - Released and maintained as OSS using GitHub Actions (CI/CD).
 - [Project page](https://radlfabs.github.io/flexcv/)
+:::
 
+::: {layout-ncol=2}
 ### Time Series Forecasting
 **University of Applied Sciences Cologne**
 
 - Prediction of open bicycle counter data for Cologne and benchmarking of ML-algorithms with time series cross-validation.
 - Fine-tuned XGBoost with external weather data and seasonal trends beats the best linear models.
+:::
 
+::: {layout-ncol=2}
 ### GridNet White Balance
 **University of Applied Sciences Cologne**
 
 - Achieved improvement in color consistency metrics with GridNet.
 - Deployed the model within a custom camera pipeline.
 - Strong communication and co-operation in a 5-person team.
+:::
 
+::: {layout-ncol=2}
 ### Soundscape Viz App 
 **University of Applied Sciences Cologne**
 
 - Interactive app visualizing survey data on individual levels.
 - Enables intuitive exploration of the diversity of participants.
 - Deployed [here](https://connect.posit.cloud/radlfabs/content/0191eac2-9bd9-4add-accd-00963fed370f) on the Posit Connect Cloud.
+:::
 
 ## Education
 
@@ -143,7 +160,7 @@ Data scientist and developer. With my engineering background, I bring a cross-di
 **University of Applied Sciences Cologne** | *2022 -- 2024*
 
 - Thesis: *Comparison of uncertainty quantification techniques for empirical prediction performance based on cross-validation.*
-  Optimized distributed ML pipeline to train 4.3M+ models on the Fraunhofer Edge Cloud.
+  Optimized distributed ML pipeline to train 4.3M+ models on the Fraunhofer Edge Cloud. A writeup is available [here](/posts/thesis/).
 - Courses: Machine learning; Deep learning and object recognition; Data visualization; Multivariate statistics.
 - Final grade: 1.2
 

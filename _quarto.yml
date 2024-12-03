@@ -12,11 +12,12 @@ website:
   navbar:
     left:
       - href: index.qmd
-        text: Projects
+        text: Home
+      - href: portfolio.qmd
+        text: Portfolio
       - href: resume.qmd
         text: Resume
     right:
-      - about.qmd
       - icon: github
         href: https://github.com/radlfabs
       - icon: linkedin

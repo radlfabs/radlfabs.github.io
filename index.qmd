@@ -1,16 +1,23 @@
 ---
-title: "Portfolio"
-listing:
-  contents: 
-    - "posts/*/*.qmd"
-  sort: "date desc"
-  type: default
-  categories: true
-  sort-ui: false
-  filter-ui: false
-page-layout: full
-title-block-banner: true
+title: "Fabian Rosenthal"
+image: images/profile.png
+about:
+  template: jolla
+  links:
+    - icon: gravatar
+      text: Gravatar
+      href: https://gravatar.com/rosenthalfabian
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/fabian-rosenthal-mle
+    - icon: github
+      text: Github
+      href: https://github.com/radlfabs
 ---
 
-Hi👋, I'm Fabian, a data scientist and developer specializing in reliable machine learning, performance estimation, and uncertainty quantification.
-Read about my projects below or check out my [resume](/resume.html).
+Hi👋, I'm Fabian, a data scientist and developer specializing in reliable machine learning.
+This portfolio websites gives an overview of my projects and skills.
+
+
+I graduated as M.Sc. in media technology with a special focus on cross-functional data science and reliable machine learning. In my Master thesis I advanced the research on uncertainty quantification for cross-validation scenarios. So I have a great understanding of performance estimation. Let's design ML solutions to be useful and reliable in both simple and critical applications. 
+I love developing of statistical software. My audio engineering background helps me to think end-to-end and solve cross-functional and medial tasks. I am excited to tackle new interdisciplinary challenges with robust machine learning and statistics. Love developing, learning and evolving in a team.
