@@ -1,5 +1,5 @@
 ---
-title: Uncertainty quantification for cross-validation (Master Thesis Writeup)
+title: Uncertainty quantification for cross-validation (Master Thesis Write-up)
 date: 2024-10-01
 author: Fabian Rosenthal
 categories: [statistics, R]
@@ -9,7 +9,7 @@ bibliography: references.bib
 
 Cross-validation is a popular method to estimate the generalization performance of a machine learning model or algorithm. It also has its place in ML benchmarking experiments, where models or algorithms are compared based on their performance estimates. However, these estimates come with uncertainty, which is often neglected in practice. My master thesis explores different uncertainty quantification techniques for cross-validation estimates and evaluates their performance in terms of coverage and interval width. It is limited to the binary classification setting and focuses on the impact of sample size and machine learning algorithm choice on the performance of these techniques.
 
-I was extremely lucky to write this thesis with supervision of Dr. Max Westphal at [Fraunhofer MEVIS](https://www.mevis.fraunhofer.de/), Bremen. I totally enjoyed the process of developing this structure and writing this fairly mathematical thesis. Never have I thought I would choose such a topic when I failed 2 out of 3 math exams in my undergraduate studies. But here we are, and I am proud of the results. I hope you enjoy this writeup as much as I enjoyed writing the thesis.
+I was extremely lucky to write this thesis with supervision of Dr. Max Westphal at [Fraunhofer MEVIS](https://www.mevis.fraunhofer.de/), Bremen, and Prof. Dr. Beate Rhein from [TH Köln](https://www.th-koeln.de/). I totally enjoyed the process of developing this structure and writing this fairly mathematical thesis. Never have I thought I would choose such a topic when I failed 2 out of 3 math exams in my undergraduate studies. But here we are, and I am proud of the results. I hope you enjoy this write-up as much as I enjoyed writing the thesis.
 <!-- ![](images/image.png){width="400px"} -->
 
 ## Introduction
