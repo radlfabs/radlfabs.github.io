@@ -1,5 +1,5 @@
 ---
-title: "Fabian Rosenthal"
+title: "About"
 image: images/profile.png
 about:
   template: jolla
@@ -15,7 +15,9 @@ about:
       href: https://github.com/radlfabs
 ---
 
-M.Sc. in media technology specialized on data science and reliable machine learning. I have expertise in uncertainty quantification, performance estimation, and writing statistical software. Excited to tackle new interdisciplinary challenges with robust machine learning and statistics. Loves developing, learning and evolving in a team.
+
+
+Fabian Rosenthal graduated as M.Sc. in media technology with focus on cross-functional data science and reliable machine learning. With expertise in uncertainty quantification, performance estimation, development of statistical software and a audio engineering background. Excited to tackle new interdisciplinary challenges with robust machine learning and statistics. Loves developing, learning and evolving in a team.
 
 ## About this portfolio page
 This website was built using the suggestions by Deepsha Menghani in a livestream on the [Posit YouTube channel](
