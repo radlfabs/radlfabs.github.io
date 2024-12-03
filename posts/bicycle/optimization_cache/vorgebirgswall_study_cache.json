@@ -1,0 +1,1 @@
+{"Vorgebirgswall": {"best_params": {"eta": 0.4101406395535361, "gamma": 736, "max_depth": 18, "min_child_weight": 5, "max_delta_step": 86, "subsample": 0.9811517534715876, "colsample_bytree": 0.24598279553840602, "reg_alpha": 841, "reg_lambda": 19}, "best_value": 9865.601557187854}}
