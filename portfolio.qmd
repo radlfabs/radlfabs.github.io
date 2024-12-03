@@ -13,5 +13,3 @@ page-layout: full
 title-block-banner: true
 ---
 
-Hi👋, I'm Fabian, a data scientist and developer specializing in reliable machine learning, performance estimation, and uncertainty quantification.
-Read about my projects below or check out my [resume](/resume.html).
