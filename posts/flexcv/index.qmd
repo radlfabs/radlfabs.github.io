@@ -14,6 +14,25 @@ execute:
 
 The package is designed to be flexible and easy to use, with a focus on reproducibility and ease of use. It is built on top of popular machine learning libraries such as scikit-learn and pandas, and is designed to work seamlessly with these libraries.
 
+This project showcases my
+
+- ability to develop and maintain a Python package
+- strong experience with machine learning and performance evaluation
+- ability to combine different libraries to create a powerful and flexible tool
+- design and documentation skills
+- ability to design and implement easy-to-use interfaces
+- experience with continuous integration and deployment
+
+## Poster
+
+<iframe 
+  width="800" 
+  height="1200" 
+  src="images/flexcv_poster.pdf">
+</iframe>
+
+This conference poster was a contribution to the [Jahrestagung für Akustik DAGA 2024](https://app2024.daga-tagung.de/konferenz?article=79) and is published [here](https://zenodo.org/records/14260131).
+
 ## Installation
 `flexcv` is on PyPI, so you can install it using pip:
 
@@ -63,5 +82,5 @@ results.summary.to_excel("my_cv_results.xlsx")
 
 I decided to use method chaining in the core interface, to make it easy to set up the configuration and perform the cross validation without having to remember a bunch of classes and functions. This approach leverages IDE hints and completion to guide the user through the process.
 
-You can learn a bit more by checking out the conference poster [here](https://zenodo.org/records/14260131) and by visiting the [project page](https://radlfabs.github.io/flexcv/).
- Feel free to reach out to me if you have any questions or suggestions, preferably using the [issue tracker](https://github.com/radlfabs/flexcv/issues).
+Visit the [project page](https://radlfabs.github.io/flexcv/) to learn more. Feel free to reach out to me if you have any questions or suggestions, preferably using the [issue tracker](https://github.com/radlfabs/flexcv/issues).
+
