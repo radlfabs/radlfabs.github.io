@@ -18,6 +18,8 @@ website:
       - href: resume.qmd
         text: Resume
     right:
+      - icon: envelope
+        href: mailto:rosenthalfabian@gmail.com
       - icon: github
         href: https://github.com/radlfabs
       - icon: linkedin
