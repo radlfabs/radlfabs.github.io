@@ -1034,17 +1034,11 @@ quant_pipeline.set_fixed_params({
 loc_str = "Venloer Straße"
 quant_pipeline.best_location = loc_str
 quant_pipeline.succesful_studies = ml_pipeline.succesful_studies
-# quant_pipeline.succesful_studies[loc_str] = {'eta': 0.4, 'max_depth': 25}
 quant_pipeline.refit(train_data)
 quant_pipeline.fit_mapie(train_data)
-quant_pipeline.plot_mapie(test_data, loc_str, alpha=0.05)
 
+quant_pipeline.plot_mapie(test_data, loc_str, alpha=0.05)
 loc_str = "Bonner Straße"
-# quant_pipeline.best_location = loc_str
-quant_pipeline.succesful_studies = ml_pipeline.succesful_studies
-# quant_pipeline.succesful_studies[loc_str] = {'eta': 0.4, 'max_depth': 25}
-quant_pipeline.refit(train_data)
-quant_pipeline.fit_mapie(train_data)
 quant_pipeline.plot_mapie(test_data, loc_str, alpha=0.05)
 ```
 
