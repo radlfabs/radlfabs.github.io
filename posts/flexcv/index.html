@@ -172,6 +172,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                                 <div class="quarto-categories">
                 <div class="quarto-category">development</div>
                 <div class="quarto-category">cross-validation</div>
+                <div class="quarto-category">ML</div>
                 <div class="quarto-category">OSS</div>
                 <div class="quarto-category">Python</div>
               </div>
@@ -223,6 +224,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>flexcv</code> is a Python package that implements flexible cross validation and machine learning for tabular data. It provides a range of features for comparing machine learning models on different datasets with different sets of predictors, customizing just about everything around cross validations. It supports both fixed and random effects, as well as random slopes.</p>
 <p><code>flexcv</code> originated from the need to perform nested cross validation on grouped data. While I wrote most of the code during my time as a student research assistant at Hochschule Düsseldorf, I have continued to maintain and improve the package as a private open-source-project. Moreover, I decided to release it with full documentation, project page on GitHub pages, and continuous integration and deployment using GitHub Actions. Have a look at the <a href="https://radlfabs.github.io/flexcv/">project page</a>!</p>
 <p>The package is designed to be flexible and easy to use, with a focus on reproducibility and ease of use. It is built on top of popular machine learning libraries such as scikit-learn and pandas, and is designed to work seamlessly with these libraries.</p>
+<p><strong>Why would you need it?</strong> You can not simply perform a nested <strong>group</strong> cross validation with scikit-learn. This is where <code>flexcv</code> comes in. It provides a simple and flexible interface for performing nested cross validation on grouped data, and supports a wide range of machine learning models and evaluation metrics. It does a whole lot of other stuff, too, like scaling in the inner and outer CV independently and providing compatibility to <code>neptune.ai</code> for logging.</p>
 <p>This project showcases my</p>
 <ul>
 <li>ability to develop and maintain a Python package</li>
@@ -246,7 +248,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="usage" class="level2">
 <h2 class="anchored" data-anchor-id="usage">Usage</h2>
 <p>Here is an example of how to use <code>flexcv</code> to perform nested cross validation on a regression problem. Let’s first load the modules and generate some sample data:</p>
-<div id="0d7a38ed" class="cell" data-execution_count="1">
+<div id="51df8936" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import the class interface, data generator and model</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flexcv <span class="im">import</span> CrossValidation</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flexcv.synthesizer <span class="im">import</span> generate_regression</span>
@@ -256,7 +258,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>X, y, group, _ <span class="op">=</span> generate_regression(<span class="dv">10</span>, <span class="dv">100</span>, noise_level<span class="op">=</span><span class="fl">0.01</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now the fun part about <code>flexcv</code> is its class interface. You can set up a complex configuration with just a few lines of code. Here is an example of how to set up a group cross validation with a linear model:</p>
-<div id="16d13991" class="cell" data-execution_count="2">
+<div id="a2007a8f" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># instantiate our cross validation class</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> CrossValidation()</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
