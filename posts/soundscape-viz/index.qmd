@@ -5,10 +5,9 @@ author: Fabian Rosenthal
 categories: [soundscape, visualization, bokeh, OSS, Python]
 image: "image.png"
 ---
-[
-Explore the app!](https://connect.posit.cloud/radlfabs/content/0191eac2-9bd9-4add-accd-00963fed370f)
 
 Visualizing abstract data helps get an intuitive feel for the raw data that sometimes goes beyond summary statistics. In this post, I show how to visualize the Düsseldorf soundscape data set using Bokeh.
+[Explore the app here!](https://connect.posit.cloud/radlfabs/content/0191eac2-9bd9-4add-accd-00963fed370f)
 
 ![Radar charts of static person information.](images/person.png){width=80%}
 
