@@ -2,7 +2,7 @@
 title: Uncertainty quantification for cross-validation (Master Thesis Write-up)
 date: 2024-10-01
 author: Fabian Rosenthal
-categories: [statistics, cross-validation, R]
+categories: [statistics, cross-validation, ML, R]
 image: "image.png"
 bibliography: references.bib
 ---
