@@ -14,6 +14,9 @@ execute:
 
 The package is designed to be flexible and easy to use, with a focus on reproducibility and ease of use. It is built on top of popular machine learning libraries such as scikit-learn and pandas, and is designed to work seamlessly with these libraries.
 
+**Why would you need it?**
+You can not simply perform a nested **group** cross validation with scikit-learn. This is where `flexcv` comes in. It provides a simple and flexible interface for performing nested cross validation on grouped data, and supports a wide range of machine learning models and evaluation metrics. It does a whole lot of other stuff, too, like scaling in the inner and outer CV independently and providing compatibility to `neptune.ai` for logging.
+
 This project showcases my
 
 - ability to develop and maintain a Python package
