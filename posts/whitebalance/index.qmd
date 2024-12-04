@@ -3,7 +3,7 @@ title: Mixed-illuminant whitebalance with GridNet
 date: 2022-02-01
 author: Fabian Rosenthal
 categories: [computer-vision, PyTorch, ML, Python]
-image: "images/gridnet_architecture.png"
+image: "images/image.png"
 bibliography: references.bib
 ---
 
