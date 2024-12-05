@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Fabian Rosenthal">
-<meta name="dcterms.date" content="2024-10-01">
+<meta name="dcterms.date" content="2024-11-01">
 
 <title>Uncertainty quantification for cross-validation (Master Thesis Write-up) – Fabian Rosenthal</title>
 <style>
@@ -206,7 +206,7 @@ window.Quarto = {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">October 1, 2024</p>
+        <p class="date">November 1, 2024</p>
       </div>
     </div>
     
@@ -385,12 +385,9 @@ g(\mathbb{E}[Y|u_{k}])=Zu_{k}+\epsilon_{k}
 <li><p>Interval width</p>
 <p><span class="math inline">\(\hat{\omega} = \frac{1}{n_\text{sim}}\sum_s \hat{\theta}^u_s - \hat{\theta}^l_s\)</span></p></li>
 <li><p>Boxplots can help identify general patterns of behaviour.</p></li>
-<li><p>Monte Carlo standard error (MCSE) indicate the precision of the Monte Carlo estimates.</p>
-<ul>
-<li><span class="math inline">\(n_\text{sim}\)</span>=500 on <code>Param</code></li>
-<li>We have to use a much smaller <span class="math inline">\(n_\text{sim}\)</span> for <code>Boot</code> and <code>GLMM</code> due to computational constraints.</li>
-</ul></li>
+<li><p>Monte Carlo standard error (MCSE) indicate the precision of the Monte Carlo estimates. The more repetitions we can do, the better (smaller) the MCSE. We have to use a much smaller <span class="math inline">\(n_\text{sim}\)</span> for <code>Boot</code> and <code>GLMM</code> due to computational constraints. So we will see higher MCSE in these Monte Carlo estimates of coverage or width.</p></li>
 </ul>
+<p>:::</p>
 </section>
 </section>
 <section id="bottlenecks" class="level2">
