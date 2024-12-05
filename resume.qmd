@@ -33,9 +33,19 @@ urlcolor: blue
 
 ## Profile
 
-Data scientist and developer. With my engineering background, I bring a cross-disciplinary perspective to data science. I am specialized in performance estimation and uncertainty quantification. Great at identifying the right tool for a problem, communicating it to the team, mastering it, and shipping it quickly.
+:::: {layout="[ 20, 80 ]"}
 
-## 
+::: {#first-column}
+![](images/profile.png){width="200px"}
+:::
+
+::: {#second-column}
+I'm Fabian Rosenthal, a Data Scientist and developer. With my engineering background, I bring a cross-disciplinary perspective to data science. I am specialized in performance estimation and uncertainty quantification. In my work and university projects, I have proven the ability to identify the right tool for a problem, communicate it to the team, master it, and ship it quickly.
+:::
+
+::::
+
+
 
 ::: {layout-ncol=2}
 **Languages**
