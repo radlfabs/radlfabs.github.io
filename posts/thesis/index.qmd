@@ -1,6 +1,6 @@
 ---
 title: Uncertainty quantification for cross-validation (Master Thesis Write-up)
-date: 2024-10-01
+date: 2024-11-01
 author: Fabian Rosenthal
 categories: [statistics, cross-validation, ML, R]
 image: "image.png"
@@ -146,10 +146,9 @@ Finally, we have to define how to measure the performance of the UQ techniques. 
 
 -   Boxplots can help identify general patterns of behaviour.
 
--   Monte Carlo standard error (MCSE) indicate the precision of the Monte Carlo estimates.
-  
-    - $n_\text{sim}$=500 on `Param`
-    - We have to use a much smaller $n_\text{sim}$ for `Boot` and `GLMM` due to computational constraints.
+-   Monte Carlo standard error (MCSE) indicate the precision of the Monte Carlo estimates. The more repetitions we can do, the better (smaller) the MCSE. We have to use a much smaller $n_\text{sim}$ for `Boot` and `GLMM` due to computational constraints. So we will see higher MCSE in these Monte Carlo estimates of coverage or width.
+
+:::
 
 ## Bottlenecks
 As the previous part indicates, we have to deal with numerous different conditions, data sets, and models. Here are some of the bottlenecks I encountered during my thesis:
