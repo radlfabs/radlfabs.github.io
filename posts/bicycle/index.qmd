@@ -1,5 +1,5 @@
 ---
-title: "Forecasting Bicycle Counts in Cologne"
+title: "Forecasting Bicycle Traffic in Cologne"
 date: 2024-12-01
 author: Fabian Rosenthal
 categories: [forecasting, open-data, geo-mapping, cross-validation, ML, Python]
