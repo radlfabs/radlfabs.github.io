@@ -26,6 +26,7 @@ dependencies = [
     "plotly>5.24",
     "polars>=1.15.0",
     "pyarrow>=18.1.0",
+    "python-dotenv>=1.0.1",
     "quarto>=0.1.0",
     "requests>=2.32.3",
     "scikit-learn>=1.5.2",
