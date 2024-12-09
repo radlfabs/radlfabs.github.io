@@ -1045,15 +1045,7 @@ quant_pipeline.plot_mapie(test_data, loc_str, alpha=0.05)
 
 We now get a very clear idea of the uncertainty in our predictions. The prediction intervals for "Bonner Straße" indicate, that the model actually has no idea what to do. In order to predict the counts for this location, we would need more data or a different model. The prediction intervals for "Venloer Straße" on the other hand, show that the model is quite confident in its predictions and always include the actual counts.
 
-```{python}
-import pickle
-with open("quant_pipeline.pkl", "wb") as f:
-    pickle.dump(quant_pipeline, f)
-
-train_data.write_csv("train_data.csv")
-```
-
-## Real-time prediction
+## Extension: Inference using a weather forecast API
 
 In order to use our models in a real-time production setting, we need to think of which features can be available at inference. As the bicycle counter data is quantized in time, we can not use this data to predict, e.g., the bicycle traffic of the next hour. This is clearly a limitation of the original project idea and data set. Moreover, our prediction pipeline is based on knowing the weather data.
 
@@ -1121,7 +1113,6 @@ GT(
     )
     
 ).tab_header("Inference Results")
-
 ```
 
-And there you have it: a real-time extension for our ML-pipeline that we now can deploy.
+And there you have it: a real-time extension for our ML-pipeline that we now use to predict bicycle traffic!
