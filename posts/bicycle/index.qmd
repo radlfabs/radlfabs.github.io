@@ -1126,6 +1126,8 @@ And then `client.py` can look like this:
 ```{python}
 #| eval: false
 #| code-fold: false
+
+# client.py
 import json
 import requests
 
@@ -1150,4 +1152,27 @@ if __name__ == '__main__':
 
     make_request(data, url_simple)
     make_request(data, url_mapie)
+```
+
+Now, you can run the Flask app with `python app.py` and then run the client with `python client.py`. You should see the predictions in the console.
+The terminal will show something like this on the Flask side:
+
+```{bash}
+* Serving Flask app 'app'
+ * Debug mode: on
+INFO:werkzeug:WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:Press CTRL+C to quit
+INFO:werkzeug:Press CTRL+C to quit
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 248-803-927
+INFO:werkzeug:127.0.0.1 - - [10/Dec/2024 11:39:17] "POST /predict HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Dec/2024 11:39:50] "POST /predict-mapie HTTP/1.1" 200 -
+```
+
+And the client will show the predictions:
+```{bash}
+{'Prediction': 91762}
+{'PI': [75288, 171766], 'Prediction': 124490}
 ```
