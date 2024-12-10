@@ -36,3 +36,4 @@ posts/bicycle/.env
 # /posts
 /docs
 *.pkl
+/posts/*/*.quarto_ipynb

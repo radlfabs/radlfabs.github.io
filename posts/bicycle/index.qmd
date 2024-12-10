@@ -20,7 +20,8 @@ This projects showcases the following skills:
 -   Efficient optimizazion of hyperparameters with Optuna
 -   Handling multiple models with OOP in Python
 -   Visualization of results
--   Use the tomorrow.io API to get real-time weather forecasts.
+-   Use the tomorrow.io API to get real-time weather forecasts
+-   Use `Flask` to use the models in a REST API.
 
 This post is reproducible. Just follow along and execute the code chunks locally.
 
@@ -36,6 +37,7 @@ import math
 import os
 import pickle
 import json
+import joblib
 import zipfile
 from datetime import datetime
 from pathlib import Path
@@ -454,87 +456,7 @@ Next up is the fun part: Actual Machine Learning! In this project, we will use t
 Let's define some `sklearn` transformers to perform feature engineering. We will create a `ColumnTransformer` that will be used in a `Pipeline`.
 
 ```{python}
-ts_cv = TimeSeriesSplit(
-    n_splits=5,
-    gap=2,
-    test_size=6
-    )
-
-class QuarterTransformer(BaseEstimator, TransformerMixin):
-    def __init__(self, date_column='date'):
-        self.date_column = date_column
-    
-    def fit(self, X, y=None):
-        return self
-    
-    def transform(self, X):
-        if isinstance(X, np.ndarray):
-            X = pd.DataFrame(X)
-        dates = X[self.date_column]
-        dates = pd.to_datetime(dates)
-
-        quarter_columns = []
-        quarter_conditions = [
-            (dates.dt.month <= 3),
-            ((dates.dt.month > 3) & (dates.dt.month <= 6)),
-            ((dates.dt.month > 6) & (dates.dt.month <= 9)),
-            (dates.dt.month > 9)
-        ]
-        quarter_names = ['Q1', 'Q2', 'Q3', 'Q4']
-        
-        for name, condition in zip(quarter_names, quarter_conditions):
-            quarter_columns.append(condition.astype(int))
-
-        # Combine all new features
-        new_features = np.column_stack(quarter_columns)
-        
-
-        return new_features
-    
-    def get_feature_names_out(self, input_features=None):
-        return ['Q1', 'Q2', 'Q3', 'Q4']
-
-
-class MonthTransformer(BaseEstimator, TransformerMixin):
-    def __init__(self, date_column='date'):
-        self.date_column = date_column
-    
-    def fit(self, X, y=None):
-        return self
-    
-    def transform(self, X):
-        if isinstance(X, np.ndarray):
-            X = pd.DataFrame(X)
-        dates = X[self.date_column]
-        dates = pd.to_datetime(dates)
-
-        month_column = dates.dt.month
-        
-        # Combine all new features
-        new_features = month_column.to_numpy().reshape(-1, 1)
-        
-        return new_features
-    
-    def get_feature_names_out(self, input_features=None):
-        return ['month']
-
-
-def sin_transformer(period=24):
-    return FunctionTransformer(lambda x: np.sin(x * 2 * np.pi / period))
-
-
-def periodic_spline_transformer(period, n_splines=None, degree=3):
-    if n_splines is None:
-        n_splines = period
-    n_knots = n_splines + 1  # periodic and include_bias is True
-    return SplineTransformer(
-        degree=degree,
-        n_knots=n_knots,
-        knots=np.linspace(0, period, n_knots).reshape(n_knots, 1),
-        extrapolation="periodic",
-        include_bias=True,
-    )
-
+#| eval: False
 
 def make_feature_transformer(X):
     numerical_columns = X.select_dtypes(include=np.number).columns.tolist()
@@ -550,7 +472,7 @@ def make_feature_transformer(X):
     sin_pipeline = Pipeline(
         steps=[
             ('month_transformer', MonthTransformer()),
-            ('sine_transformer', sin_transformer(24))
+            ('sine_transformer', SinusTransformer())
         ]
     )
 
@@ -567,21 +489,20 @@ def make_feature_transformer(X):
         verbose_feature_names_out=False
     )
     return col_transformer
+)
 ```
 
 #### Tuning objective
 
-Next we will define a custom objective function, that we want to minimize. The function will be called by Optuna and will return the negative RMSE of the cross-validated model. We will use the `XGBRegressor` from `XGBoost` as the model. We will use the `make_feature_transformer` function to create a `ColumnTransformer` that will be used in the `sklearn` `Pipeline`.
+Next we will define a custom objective function, that we want to minimize. The function will be called by Optuna and will return the negative RMSE of the cross-validated model. We will use the `XGBRegressor` from `XGBoost` as the model and the transformer as shown in the code block above.
 
 ```{python}
-def objective(trial, X_train, y_train):
 
-    numerical_columns = X_train.select_dtypes(include=np.number).columns.tolist()
+def objective(trial, X_train, y_train):
     col_transformer = make_feature_transformer(X_train)
 
     xgbr = XGBRegressor(
-            n_estimators=2000,
-            # n_estimators=trial.suggest_int("n_estimators", 100, 2000),
+            n_estimators=500,
             learning_rate=trial.suggest_float("eta", 0.0001, 1),
             gamma=trial.suggest_int('gamma', 0, 1000),
             max_depth=trial.suggest_int("max_depth", 1, 50),
@@ -608,17 +529,19 @@ def objective(trial, X_train, y_train):
     return -cv_score.mean()
 ```
 
+
 #### The Predictor Class
 
-Due to the data structure, we want to map a special model which is specialized on predicing the bicycle counts for a single location. This can be achieved by a little bit of object oriented programming. We will define a class `BicyclePredictor` that will hold the models. The class will have methods for tuning, refitting, and predicting. The class will also allow us to make plots.
+In order to fit and predict for multiple counter locations, we will have to write a bit of custom OOP code. Due to the data structure, we want to map special models which are specialized on predicing the bicycle counts for a single location to their data. We will define a class `SimpleModel` that will hold the models. The class will have methods for tuning, refitting, and predicting. "Simple" refers to the fact that we are predicting single values. We can inherit from this class to extend it with prediction intervals later on.
 
 ```{python}
+#| eval: False
 
-class BicyclePredictor():
+class SimpleModel():
     def __init__(self, fixed_params=None, cache_dir='optimization_cache'):
         if fixed_params is None:
             fixed_params = {
-                "n_estimators": 2000,
+                "n_estimators": 500,
                 "enable_categorical": True,
                 "random_state": 42
             }
@@ -626,7 +549,7 @@ class BicyclePredictor():
         os.makedirs(cache_dir, exist_ok=True)
         self.fixed_params = fixed_params
         self.is_fitted = False
-    
+
     def set_objective(self, objective):
         self.objective = objective
 
@@ -688,6 +611,8 @@ class BicyclePredictor():
         for location, group in train_data.group_by('location'):
             location = location[0]
 
+            logger.info(f"Tuning {location}.")
+
             if location in failed_studies.keys():
                 continue
             
@@ -696,6 +621,7 @@ class BicyclePredictor():
             if use_stored:
                 cached_study = self._load_study_cache(loc_str)
                 if cached_study:
+                    logger.info(f"Using stored hyperparameters for {location}.")
                     inner_dict = cached_study[location]
                     succesful_studies[location] = inner_dict['best_params']
                     metrics[location] = inner_dict['best_value']
@@ -703,11 +629,14 @@ class BicyclePredictor():
             
             X_train = group.drop("count").to_pandas()
             y_train = group["count"]
-            objective_partial = lambda trial: self.objective(trial, X_train, y_train)
             study = optuna.create_study(direction="minimize")
             
             try:
-                study.optimize(objective_partial, n_trials=n_trials)
+                logger.info(f"Optimizing hyperparameters for {location}.")
+                study.optimize(
+                    lambda trial: self.objective(trial, X_train, y_train), 
+                    n_trials=n_trials
+                    )
                 succesful_studies[location] = study.best_trial.params
                 metrics[location] = study.best_trial.value
 
@@ -765,6 +694,7 @@ class BicyclePredictor():
         self._pipeline_dict = {}
         # fit location specific models
         for location, data in self.succesful_studies.items():
+            logger.info(f"Refitting model for {location}.")
             self._pipeline_dict[location] = self._refit_inner(
                 train_data=train_data.filter(pl.col("location") == location),
                 location=location
@@ -820,9 +750,10 @@ class BicyclePredictor():
     def get_pipeline(self, loc_str):
         return self._pipeline_dict.get(loc_str, self._baseline_pipe)
     
-    def plot_predictions(self, data, loc_str):
-        import os
+    def save(self, path="models/trained_ml_pipeline.pkl"):
+        joblib.dump(self, path)
 
+    def plot_predictions(self, data, loc_str):
         if not os.path.exists("images"):
             os.mkdir("images")
 
@@ -847,16 +778,11 @@ class BicyclePredictor():
 As all necessary boilerplate code is already written in the `BicyclePredictor` class, we can now use it with very little code.
 
 ```{python cache=TRUE}
-
-ml_pipeline = BicyclePredictor()
-ml_pipeline.set_objective(objective)
-ml_pipeline.set_fixed_params({
-    "n_estimators": 2000,
-    "enable_categorical": True,
-    "random_state": 42
-})
+from model_class import SimpleModel
+ml_pipeline = SimpleModel()
 ml_pipeline.tune(train_data, n_trials=200, use_stored=True)
 ml_pipeline.refit(train_data)
+ml_pipeline.save()
 ```
 
 ## Evaluation
@@ -904,14 +830,18 @@ Now, there are different approaches to constructing prediction intervals. But si
 We will define a new class `QuantileModels` that inherits from `BicyclePredictor` and extends it with the necessary methods to fit the `MapieTimeSeriesRegressor`and predict the intervals. We will use the `BlockBootstrap` method to resample the data and get the intervals. We will also define a method to plot the intervals.
 
 This code combines some of the examples [here](https://mapie.readthedocs.io/en/latest/examples_regression/2-advanced-analysis/plot_timeseries_enbpi.html) and [here](https://mapie.readthedocs.io/en/latest/examples_regression/1-quickstart/plot_timeseries_example.html#sphx-glr-examples-regression-1-quickstart-plot-timeseries-example-py).
-```{python cache=TRUE}
-from mapie.regression import MapieRegressor, MapieTimeSeriesRegressor
-from mapie.metrics import (regression_coverage_score,
-                           regression_mean_width_score)
-from mapie.subsample import BlockBootstrap
+```{python}
+#| eval: False
 
-class QuantileModels(BicyclePredictor):
-    def _fit_mapie(self, train_data, location):
+
+class MAPIEModel(SimpleModel):
+    def set_succesful_studies(self, succesful_studies):
+        self.succesful_studies = succesful_studies
+    
+    def set_best_location(self, best_location):
+        self.best_location = best_location
+
+    def _fit_mapie(self, train_data, location, n_resamplings=100, n_blocks=3):
         X_train = train_data.drop("count").filter(train_data["location"] == location).to_pandas()
         y_train = train_data.filter(train_data["location"] == location)["count"]
 
@@ -924,7 +854,7 @@ class QuantileModels(BicyclePredictor):
             )
 
         cv_mapietimeseries = BlockBootstrap(
-            n_resamplings=100, n_blocks=3, overlapping=False, random_state=42
+            n_resamplings=n_resamplings, n_blocks=n_blocks, overlapping=False, random_state=42
         )
         mapie = MapieTimeSeriesRegressor(
             pipe,
@@ -935,12 +865,15 @@ class QuantileModels(BicyclePredictor):
         )
         return mapie.fit(X_train, y_train)
 
-    def fit_mapie(self, train_data):
+    def fit_mapie(self, train_data, n_resamplings=100, n_blocks=3):
+        self.refit(train_data)
         self._baseline_mapie = self._fit_mapie(train_data, location=self.best_location)
 
         self.mapie_models = {}
         for location in self.succesful_studies.keys():
-            self.mapie_models[location] = self._fit_mapie(train_data, location=location)
+            logger.info(f"Fitting MAPIE model for {location}.")
+            self.mapie_models[location] = self._fit_mapie(train_data, location=location, n_resamplings=n_resamplings, n_blocks=n_blocks)
+
 
         self.is_mapie_fitted = True
 
@@ -965,10 +898,12 @@ class QuantileModels(BicyclePredictor):
             f"{coverage:.3f}, {width:.3f}"
         )
 
+    def save(self, path="models/trained_quantile_pipeline.pkl"):
+        joblib.dump(self, path)
+
     def plot_mapie(self, data, loc_str, alpha=0.05):
         import plotly.graph_objects as go
         self.check_mapie_fitted()
-        data = test_data
 
         X_test = data.filter(data["location"] == loc_str).drop("count").to_pandas()
         y_test = data.filter(data["location"] == loc_str)["count"].to_pandas()
@@ -1020,30 +955,24 @@ class QuantileModels(BicyclePredictor):
         fig.show()
 ```
 
-As some of the attributes in our previous class instance are needed in the new instance of `QuantileModels`, we can simply copy them over. We will then fit the model and predict the intervals for the best location.
+Now, we can instantiate the MAPIE model and set some necessary attributes. We are basically transferring some optimization results to the new instance to not tune the models again. Instead, we are just fitting the underlying MAPIE time series models.
 
-First, we will look at one location, that show reasonably good predictions, and then at one location that shows bad predictions.
 ```{python}
 #| warning: false
 #| cache: true
-quant_pipeline = QuantileModels()
-quant_pipeline.set_fixed_params({
-    "n_estimators": 2000,
-    "enable_categorical": True,
-    "random_state": 42
-})
-loc_str = "Venloer Straße"
-quant_pipeline.best_location = loc_str
-quant_pipeline.succesful_studies = ml_pipeline.succesful_studies
-quant_pipeline.refit(train_data)
-quant_pipeline.fit_mapie(train_data)
+from model_class import MAPIEModel
 
-quant_pipeline.plot_mapie(test_data, loc_str, alpha=0.05)
-loc_str = "Bonner Straße"
-quant_pipeline.plot_mapie(test_data, loc_str, alpha=0.05)
+quant_pipeline = MAPIEModel()
+loc_str = "Venloer Straße"
+quant_pipeline.set_best_location(loc_str)
+quant_pipeline.set_succesful_studies(ml_pipeline.succesful_studies)
+quant_pipeline.fit_mapie(train_data)
+quant_pipeline.save()
 ```
 
-We now get a very clear idea of the uncertainty in our predictions. The prediction intervals for "Bonner Straße" indicate, that the model actually has no idea what to do. In order to predict the counts for this location, we would need more data or a different model. The prediction intervals for "Venloer Straße" on the other hand, show that the model is quite confident in its predictions and always include the actual counts.
+```{python}
+quant_pipeline.plot_mapie(test_data, loc_str, alpha=0.05)
+```
 
 ## Extension: Inference using a weather forecast API
 
@@ -1053,6 +982,8 @@ Here is a example idea, how we can get the weather data from the [tomorrow.io](h
 Let's look at one time point from the forecast API.
 
 ```{python}
+#| cache: true
+
 import os
 from pprint import pprint
 import dotenv
@@ -1082,6 +1013,15 @@ However, a few columns will be missing. We can impute them by taking the mean of
 ```{python}
 inference_data = (
     pl.DataFrame(r_data["timelines"]["daily"][0]["values"])
+    .select(
+        "temperatureMax",
+        "temperatureMin",
+        "temperatureAvg",
+        "rainAccumulationMax",
+        "windSpeedMax",
+        "windSpeedAvg",
+        "cloudCoverAvg"
+    )
     .with_columns(
         pl.lit("Venloer Straße").alias("location"),
         pl.col("temperatureMax").alias("air_temp_daymax_month_max"),
@@ -1098,6 +1038,9 @@ inference_data = (
         precipitation_month_sum = train_data["precipitation_month_sum"].mean(),
     )
 )
+
+inference_data.write_json("data/inference_data.json")
+
 loc_str = "Venloer Straße"
 y_pred, y_pis = quant_pipeline.predict_mapie(inference_data.to_pandas(), loc_str=loc_str, alpha=0.05)
 
@@ -1116,3 +1059,95 @@ GT(
 ```
 
 And there you have it: a real-time extension for our ML-pipeline that we now use to predict bicycle traffic!
+
+Let's copy the files to another directory, where we use the models in a REST API. `Flask`is a great choice to build a REST API with our trained models in a super simple way. We will write to files: `app.py` and `client.py`. Here is what we need inside of `app.py`:
+
+```{python}
+#| eval: false
+#| code-fold: false
+
+# app.py
+import joblib
+from pathlib import Path
+import pandas as pd
+import numpy as np
+from flask import Flask, render_template, request, jsonify
+from model_class import SimpleModel, MAPIEModel
+from lookup import names_lookup
+
+
+def process_json(json_):
+    if isinstance(json_, list):
+        json_ = json_[0]
+    json_["location"] = names_lookup.get(json_["location"], json_["location"])
+    df = pd.DataFrame(json_, index=[0])
+    return df
+
+
+def process_result(y_pred):
+    return y_pred.round(2).astype(int).item()
+
+
+def process_result_tuple(y_pis):
+    return y_pis.round(2).astype(int).flatten().tolist()
+
+
+model_path = Path("trained_models")
+simple_path = model_path / "trained_ml_pipeline.pkl"
+mapie_path = model_path / "trained_quantile_pipeline.pkl"
+simple_model = joblib.load(simple_path)
+mapie_model = joblib.load(mapie_path)
+
+app = Flask(__name__)
+
+@app.route("/predict",methods=["POST"])
+def predict_simple():
+    df = process_json(request.json)
+    y_pred = simple_model.predict(df)
+    y_pred = process_result(y_pred)
+    return jsonify({"Prediction": y_pred})
+
+@app.route("/predict-mapie",methods=["POST"])
+def predict_mapie():
+    df = process_json(request.json)
+    y_pred, y_pis = mapie_model.predict_mapie(df)
+    y_pred = process_result(y_pred)
+    y_pis = process_result_tuple(y_pis)
+    return jsonify({
+        "Prediction": y_pred, 
+        "PI": y_pis})
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+And then `client.py` can look like this:
+
+```{python}
+#| eval: false
+#| code-fold: false
+import json
+import requests
+
+def make_request(data, url):
+    response = requests.post(url, json=data)
+    if response.status_code == 200:
+        prediction = response.json()
+        print(prediction)
+    else:
+        print(f'API Request Failed with Status Code: {response.status_code}')
+        print(f'Response Content: {response.text}')
+
+
+if __name__ == '__main__':
+    # Define the URL of the Flask API
+    url_simple = 'http://127.0.0.1:5000/predict'
+    url_mapie = 'http://127.0.0.1:5000/predict-mapie'
+
+    # load features for inference
+    with open("data/inference_data.json") as f:
+        data = json.load(f)
+
+    make_request(data, url_simple)
+    make_request(data, url_mapie)
+```
