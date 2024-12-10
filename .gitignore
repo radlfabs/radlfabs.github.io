@@ -35,3 +35,4 @@ posts/bicycle/data/weather.zip
 posts/bicycle/.env
 # /posts
 /docs
+*.pkl
