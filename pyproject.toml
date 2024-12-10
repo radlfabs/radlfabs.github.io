@@ -9,6 +9,7 @@ dependencies = [
     "colorcet>=3.1.0",
     "dask[dataframe]>=2024.11.2",
     "datashader>=0.16.3",
+    "flask>=3.1.0",
     "geopandas>=1.0.1",
     "geopy>=2.4.1",
     "great-tables>=0.14.0",
