@@ -33,5 +33,5 @@ posts/bicycle/data/weather.zip
 /_freeze
 /docs
 posts/bicycle/.env
-/posts
+# /posts
 /docs
