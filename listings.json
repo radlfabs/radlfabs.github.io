@@ -2,6 +2,7 @@
   {
     "listing": "/portfolio.html",
     "items": [
+      "/posts/realtime-bicycles/index.html",
       "/posts/bicycle/index.html",
       "/posts/thesis/index.html",
       "/posts/flexcv/index.html",
