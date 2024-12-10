@@ -3,7 +3,7 @@ title: "Predicting bicycle traffic with a REST API using real-time weather data"
 date: 2024-12-10
 author: Fabian Rosenthal
 categories: [forecasting, tomorrow.io, Flask, API, ML, Python]
-image: "dalle_traffic.webp"
+image: "bremen_bike.jpg"
 ---
 
 This post extends the project on [modelling bicycle traffic in Cologne](/posts/bicycle/). We will host a REST API with our trained models to allow real-time predictions by querying the tomorrow.io API. Additionally, we will build a REST API with Flask to serve our models. This will allow us to make predictions with our models in a real-time setting.
