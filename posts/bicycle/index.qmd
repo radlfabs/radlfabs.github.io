@@ -972,3 +972,7 @@ quant_pipeline.save()
 ```{python}
 quant_pipeline.plot_mapie(test_data, loc_str, alpha=0.05)
 ```
+
+## Extension
+
+An extension to this project allowing real-time predictions is described in this follow-up [post](posts/realtime-bicycles/). Here, I'll use `Flask` to create a REST API that makes predictions using our pickled models. We will also use real-time weather data from the tomorrow.io API to get a inference feature vector.
