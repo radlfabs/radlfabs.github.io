@@ -777,11 +777,18 @@ class SimpleModel():
 As all necessary boilerplate code is already written in the `BicyclePredictor` class, we can now use it with very little code.
 
 ```{python cache=TRUE}
+import joblib
 from model_class import SimpleModel
-ml_pipeline = SimpleModel()
-ml_pipeline.tune(train_data, n_trials=200, use_stored=True)
-ml_pipeline.refit(train_data)
-ml_pipeline.save()
+
+pickled_path = Path("trained_models/trained_ml_pipeline.pkl")
+if pickled_path.exists():
+    ml_pipeline = joblib.load(pickled_path)
+else:
+    ml_pipeline = SimpleModel()
+    ml_pipeline.tune(train_data, n_trials=200, use_stored=True)
+    ml_pipeline.refit(train_data)
+    ml_pipeline.save()
+
 ```
 
 ## Evaluation
@@ -959,20 +966,31 @@ Now, we can instantiate the MAPIE model and set some necessary attributes. We ar
 ```{python}
 #| warning: false
 #| cache: true
+import joblib
 from model_class import MAPIEModel
 
-quant_pipeline = MAPIEModel()
 loc_str = "Venloer Straße"
-quant_pipeline.set_best_location(loc_str)
-quant_pipeline.set_succesful_studies(ml_pipeline.succesful_studies)
-quant_pipeline.fit_mapie(train_data)
-quant_pipeline.save()
+pickled_path = Path("trained_models/trained_quantile_pipeline.pkl")
+
+if pickled_path.exists():
+    quant_pipeline = joblib.load(pickled_path)
+else:
+    quant_pipeline = joblib.load(pickled_path)
+    quant_pipeline = MAPIEModel()
+    quant_pipeline.set_best_location(loc_str)
+    quant_pipeline.set_succesful_studies(ml_pipeline.succesful_studies)
+    quant_pipeline.fit_mapie(train_data)
+    quant_pipeline.save()
+
 ```
 
+Now let's plot our new prediction intervals and their mean predictions for the location "Venloer Straße" for the test year 2022.
 ```{python}
 quant_pipeline.plot_mapie(test_data, loc_str, alpha=0.05)
 ```
 
-## Extension
+The model is fairly uncertain, what the lower bound of bicycles counted is in the unseen time range. The upper bound at least includes all the actual counts. This is a good sign, but the model might be too conservative.
 
-An extension to this project allowing real-time predictions is described in this follow-up [post](posts/realtime-bicycles/). Here, I'll use `Flask` to create a REST API that makes predictions using our pickled models. We will also use real-time weather data from the tomorrow.io API to get a inference feature vector.
+## Extension for Real-Time Predictions
+
+An extension to this project allowing real-time predictions is described in this follow-up [post](../realtime-bicycles/). Here, I'll use the `Flask` library to create a REST API that makes predictions using our pickled models. We will also use real-time weather data from the tomorrow.io API to get a inference feature vector.
