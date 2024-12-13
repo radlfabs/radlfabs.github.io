@@ -107,22 +107,41 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
 
+
+
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
 <script type="text/javascript">
+
 window.PlotlyConfig = {MathJaxConfig: 'local'};
+
 if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
+
 if (typeof require !== 'undefined') {
+
 require.undef("plotly");
+
 requirejs.config({
+
     paths: {
+
         'plotly': ['https://cdn.plot.ly/plotly-2.35.2.min']
+
     }
+
 });
+
 require(['plotly'], function(Plotly) {
+
     window._Plotly = Plotly;
+
 });
+
 }
+
 </script>
+
+
 
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
@@ -2654,10 +2673,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>   
     <div class="nav-footer-center">
-<p><a href="mailto:rosenthal.fabian@gmail.com">Contact Fabian Rosenthal</a> | <a href="impressum.qmd">Impressum</a> | <a href="datenschutz.qmd">Privacy statement</a></p>
-</div>
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="mailto:rosenthal.fabian@gmail.com">
+<p>Contact Fabian Rosenthal</p>
+</a>
+  </li>  
+</ul>
+    </div>
     <div class="nav-footer-right">
-      &nbsp;
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../../LICENSE.html">
+<p>License</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="../../impressum.html">
+<p>Impressum</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="../../datenschutz.html">
+<p>Privacy statement</p>
+</a>
+  </li>  
+</ul>
     </div>
   </div>
 </footer>
