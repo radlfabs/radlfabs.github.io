@@ -26,8 +26,17 @@ website:
         href: https://www.linkedin.com/in/fabian-rosenthal-mle
 
   page-footer:
-    center: |
-      [Contact Fabian Rosenthal](mailto:rosenthal.fabian@gmail.com) | [Impressum](impressum.qmd) | [Privacy statement](datenschutz.qmd)
+    center: 
+      - href: mailto:rosenthal.fabian@gmail.com
+        text: Contact Fabian Rosenthal
+    right:
+      - href: LICENSE.md
+        text: License
+      - href: impressum.qmd
+        text: Impressum
+      - href: datenschutz.qmd
+        text: Privacy statement
+        
 
 format:
   html:
