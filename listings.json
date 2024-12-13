@@ -2,6 +2,7 @@
   {
     "listing": "/portfolio.html",
     "items": [
+      "/posts/wupsi-weather/index.html",
       "/posts/realtime-bicycles/index.html",
       "/posts/bicycle/index.html",
       "/posts/thesis/index.html",
