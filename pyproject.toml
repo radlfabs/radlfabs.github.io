@@ -15,6 +15,7 @@ dependencies = [
     "ipywidgets>=8.1.5",
     "jupyter>=1.1.1",
     "mapie>=0.9.1",
+    "meteostat>=1.6.8",
     "numba==0.60.0",
     "optuna>=4.1.0",
     "pandas>=2.2.3",
