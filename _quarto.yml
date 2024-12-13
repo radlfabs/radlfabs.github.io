@@ -24,9 +24,10 @@ website:
         href: https://github.com/radlfabs
       - icon: linkedin
         href: https://www.linkedin.com/in/fabian-rosenthal-mle
+
   page-footer:
     center: |
-      [Contact Fabian Rosenthal](mailto:rosenthal.fabian@gmail.com)
+      [Contact Fabian Rosenthal](mailto:rosenthal.fabian@gmail.com) | [Impressum](impressum.qmd) | [Privacy statement](datenschutz.qmd)
 
 format:
   html:
