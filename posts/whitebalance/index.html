@@ -326,7 +326,7 @@ window.Quarto = {
 <section id="code" class="level2">
 <h2 class="anchored" data-anchor-id="code">Code</h2>
 <p>Here is my code, that I wrote for the custom class <code>AfifiRenderer</code>. The first part defines two custom dictionary classes, that prevent us from using the model in a wrong way.</p>
-<div id="97196a9a" class="cell" data-execution_count="1">
+<div id="b08c8d37" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CameraDict(Dict[<span class="bu">str</span>, Camera]):</span>
@@ -418,7 +418,7 @@ window.Quarto = {
 </details>
 </div>
 <p>The second part now defines the <code>AfifiRenderer</code> class, that holds the model and the camera pipeline. The <code>render</code> method applies the model to the images and the <code>save</code> method saves the results to disk.</p>
-<div id="c78cc26e" class="cell" data-execution_count="2">
+<div id="36d58da0" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AfifiRenderer:</span>
@@ -751,7 +751,7 @@ window.Quarto = {
 </details>
 </div>
 <p>Here is an example how this would be used:</p>
-<div id="903b5e31" class="cell" data-execution_count="3">
+<div id="66d3cbaf" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the raw image that should be processed</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>img_raw <span class="op">=</span> cv2.imread(<span class="st">"images/230119_MlPo_multi_illuminant_polarization_dataset/A0021_0002.tiff"</span>, <span class="op">-</span><span class="dv">1</span>)  <span class="co"># -1 for uint16</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1351,7 +1351,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>   
     <div class="nav-footer-center">
-<p><a href="mailto:rosenthal.fabian@gmail.com">Contact Fabian Rosenthal</a></p>
+<p><a href="mailto:rosenthal.fabian@gmail.com">Contact Fabian Rosenthal</a> | <a href="impressum.qmd">Impressum</a> | <a href="datenschutz.qmd">Privacy statement</a></p>
 </div>
     <div class="nav-footer-right">
       &nbsp;
