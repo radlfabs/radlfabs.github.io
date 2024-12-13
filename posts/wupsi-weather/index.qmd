@@ -1,0 +1,145 @@
+---
+title: Recreating a temperature deviation chart for Wuppertal
+date: 2024-12-13
+author: Fabian Rosenthal
+categories: [climate, data visualisation, Python]
+image: "images/image.png"
+bibliography: refs.bib
+---
+
+2024 will most likely be the first year to exceed 1.5°C above the pre-industrial average. To get a better understanding of the local temperature development, I decided to recreate a chart that shows the air temperature anomalies relative to a more recent period: 1991--2020. The chart that we will recreate is published by Copernicus Climate Change Sercive (C3S) [here](https://climate.copernicus.eu/2024-track-be-first-year-exceed-15oc-above-pre-industrial-average) and looks like this:
+
+![](images/C3S_Bulletin_temp_202411_Fig1c_timeseries_anomalies_ref1991-2020_global_12months.png){width="60%"}
+
+[The reference period for the pre-industrial age is typically 1850--1900](https://th-thumbnailer.cdn-si-edu.com/zMZS87DLuTMUwcj-eHCWfLGIY2U=/fit-in/1072x0/filters:focal(1700x1400:1701x1401)/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer_public/25/ff/25ff77cc-08a4-4d6e-8c77-bcdb58470ac5/c3s_pr_202410_fig1_timeseries_annual_global_temperature_anomalies_ref1850-1900.png). More information on this topic is available at C3S or in this [post](https://www.smithsonianmag.com/smart-news/climate-scientists-project-2024-will-be-the-hottest-year-on-record-and-the-first-to-pass-15-degrees-celsius-of-warming-180985614/) by Eli Wizevich.
+
+The chosen C3S plot shows the deviation of the moving 12 months average temperature to the average temperature in the reference period 1991-2020. It uses a filled area plot with blue and red indicating averages below and above the reference temperature, respectively. The plot is themed minimalistic with a white background and only horizontal gridlines.
+
+So to recreate this for the town I live in, we need to:
+
+1.  get the coordinates of the city of Wuppertal,
+2.  use the coordinates to download the historical temperature data,
+3.  aggregate using a rolling mean,
+4.  calculate the reference temperature,
+5.  plot everything.
+
+## Packages
+
+For getting the temperature data we'll be using the `meteostat` package. The data wrangling can be performed in `polars` and we'll use `plotly` to make interactive plots afterwards.
+
+```{python}
+from datetime import datetime
+import polars as pl
+from meteostat import Point, Daily
+import numpy as np
+import plotly.express as px
+import plotly.graph_objects as go
+```
+
+## Get the data
+
+We could get coordinates from the `geopy` package. In this case, for a single request, I found it quicker to just google it. We pass the coordinates to the `Point` class and then use it inside `Daily` to define the timespan for this location and the data frequency. For a quick overview we can just plot the data with the `plot` method.
+
+```{python}
+#| eval: false
+#| code-fold: false
+# googled Wuppertal coordinates
+LATITUDE = 51.27027 
+LONGITUDE = 7.16755
+
+# define timespane
+start = datetime(1979, 1, 1)
+end = datetime(2024, 12, 31)
+wuppertal = Point(LATITUDE, LONGITUDE)
+data = Daily(wuppertal, start, end)
+data = pl.DataFrame(data.fetch().reset_index())
+```
+
+In this post I simply load the pre-fetched data from a csv file, because I could not resolve a dependency conflict with the `meteostat` package in the context of my environment used for the website.
+
+## Data wrangling
+
+Next we move over to `polars` to do the data wrangling. We can throw away the time information and make a date column. Afterwards, we can apply our rolling average with a 12 month or 365 days window.
+
+```{python}
+#| code-fold: false
+data = pl.read_csv("data/data.csv")
+
+df = (
+    data
+    .with_columns(
+        pl.col("time").cast(pl.Date).dt.date().alias("date"),
+        pl.col("tavg").cast(pl.Float32).rolling_mean(365).alias("tavg_rolling_12m")
+    )
+)
+```
+
+To not get totally confused, I did the reference calculations not in a chain but simply created a new object by subsetting the dataframe to the relevant time points. We also calculate the yearly average deviation to plot bars for each year. In the final assignment in this chunk, we split up the data into two columns, one for the positive deviations and one for the negative deviations. This makes it easier to plot different colors for the two cases.
+
+```{python}
+#| code-fold: false
+ref_overall = (
+    df
+    .filter(pl.col("date") >= datetime(1991, 1, 1))
+    .filter(pl.col("date") <= datetime(2020, 12, 31))
+    .mean()
+    .rename({"tavg": "tavg_overall_ref"})
+)
+
+# we could use the yearly_avg
+yearly_avg = (
+    df
+    .group_by(pl.col("date").dt.year())
+    .agg(pl.mean("tavg").alias("tavg_yearly_avg"))
+    .with_columns(yearly_deviation = pl.col("tavg_yearly_avg") - ref_overall["tavg_overall_ref"])
+)
+
+df = ( 
+    df
+    .with_columns(yearly_deviation = pl.col("tavg_rolling_12m") - ref_overall["tavg_overall_ref"])
+    .with_columns(above_0 = pl.when(pl.col("yearly_deviation") > 0).then(pl.col("yearly_deviation")).otherwise(None),
+                  below_0 = pl.when(pl.col("yearly_deviation") <= 0).then(pl.col("yearly_deviation")).otherwise(None))
+)
+
+```
+
+## Plotting
+
+Now comes the easy part. We just add two traces of `go.Scatter` to a `go.Figure` object. We could also add the yearly average deviation as bars. I decided to make this optional. You can click on the legend elements to view the bar plot. The `update_yaxes` method is used to add the °C to the y-axis ticks. In order to get a similar theme as in the original chart, we will use the "plotly_white" template and remove the horizontal gridlines with the `update_xaxes` method.
+
+```{python}
+#| code-fold: false
+fig = go.Figure()
+fig.add_trace(go.Scatter(x=df["date"], y=df["below_0"], mode='lines', fill="tozeroy", name='1Y avg > 1991-2020', legendgroup="1"))
+fig.add_trace(go.Scatter(x=df["date"], y=df["above_0"], mode='lines', fill="tozeroy", name='1Y avg <= 1991-2020', legendgroup="1"))
+
+# optional yearly average
+fig.add_trace(go.Bar(x=yearly_avg["date"], y=yearly_avg["yearly_deviation"], name='Yearly Average', visible='legendonly'))
+
+# add °C to y ticks
+fig.update_yaxes(ticksuffix="°C")
+fig.update_layout(
+    title='Wuppertal surface air temperature deviation from 1991-2020 average',
+    xaxis_title='',
+    yaxis_title='Temperature Deviation'
+    )
+fig.update_xaxes(showgrid=False, zeroline=True)
+# move legend to bottom
+fig.update_layout(legend=dict(
+    orientation="h",
+    yanchor="bottom",
+    y=-0.2,
+    xanchor="right",
+    x=0.5
+))
+fig.update_layout(template="plotly_white")
+fig.show()
+```
+
+Compared to the global data from the ERA5 reanalysis, Wuppertal shows longer periods of above-reference temperatures in the 2000s. This seems to be a bit earlier than the global average. However, the global chart shows high increase of temperature deviation from 2010 onwards, whereas Wuppertal saw a colder phase until around 2015. Spikes closing on 1.5°C were already noticeable in June 2007 and April 2019. March 2024 (corresponding to a 12 month moving average) was the first time point in the data at hand to exceed 1.5°C above the 1991-2020 average. While the 1980s were down to 2°C colder as the reference period, the colder as reference periods get slightly warmer over time (compare 1986, 1997, 2006, 2013).
+
+## General information on Wuppertal
+[Wuppertal](https://www.wuppertal.de/) is a town in the region Bergisches Land and is following the river Wupper. It is well known for its steep hills and the famous [Schwebebahn](https://de.wikipedia.org/wiki/Wuppertaler_Schwebebahn), a suspension railway. 
+The town is located in the state of North Rhine-Westphalia in Germany. A paper from @BergischeUniversitatWuppertal2015 goes a bit into detail what makes the climate in Wuppertal special:
+
+> At the heights of the Bergisches Land region, moist Atlantic air masses meet an obstacle for the first time with the prevailing westerly air currents and are dammed up. As a result, the clouds rise into higher layers of air, which are usually colder, condense and rain down in the form of downpours. Around 1100 mm of precipitation is recorded in Elberfeld, rising to 1200 mm in Barmen/Oberbarmen.
