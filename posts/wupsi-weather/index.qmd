@@ -23,6 +23,12 @@ So to recreate this for the town I live in, we need to:
 4.  calculate the reference temperature,
 5.  plot everything.
 
+## General information on Wuppertal
+Before we dive into the code, here's some information on [Wuppertal](https://www.wuppertal.de/): It's is a town in the region Bergisches Land and is following the river Wupper. It is well known for its steep hills and the famous [Schwebebahn](https://de.wikipedia.org/wiki/Wuppertaler_Schwebebahn), a suspension railway. 
+The town is located in the state of North Rhine-Westphalia in Germany. A paper from @BergischeUniversitatWuppertal2015 goes a bit into detail what makes the climate in Wuppertal special:
+
+> At the heights of the Bergisches Land region, moist Atlantic air masses meet an obstacle for the first time with the prevailing westerly air currents and are dammed up. As a result, the clouds rise into higher layers of air, which are usually colder, condense and rain down in the form of downpours. Around 1100 mm of precipitation is recorded in Elberfeld, rising to 1200 mm in Barmen/Oberbarmen.
+
 ## Packages
 
 For getting the temperature data we'll be using the `meteostat` package. The data wrangling can be performed in `polars` and we'll use `plotly` to make interactive plots afterwards.
@@ -136,10 +142,6 @@ fig.update_layout(template="plotly_white")
 fig.show()
 ```
 
+## Some notes
+
 Compared to the global data from the ERA5 reanalysis, Wuppertal shows longer periods of above-reference temperatures in the 2000s. This seems to be a bit earlier than the global average. However, the global chart shows high increase of temperature deviation from 2010 onwards, whereas Wuppertal saw a colder phase until around 2015. Spikes closing on 1.5°C were already noticeable in June 2007 and April 2019. March 2024 (corresponding to a 12 month moving average) was the first time point in the data at hand to exceed 1.5°C above the 1991-2020 average. While the 1980s were down to 2°C colder as the reference period, the colder as reference periods get slightly warmer over time (compare 1986, 1997, 2006, 2013).
-
-## General information on Wuppertal
-[Wuppertal](https://www.wuppertal.de/) is a town in the region Bergisches Land and is following the river Wupper. It is well known for its steep hills and the famous [Schwebebahn](https://de.wikipedia.org/wiki/Wuppertaler_Schwebebahn), a suspension railway. 
-The town is located in the state of North Rhine-Westphalia in Germany. A paper from @BergischeUniversitatWuppertal2015 goes a bit into detail what makes the climate in Wuppertal special:
-
-> At the heights of the Bergisches Land region, moist Atlantic air masses meet an obstacle for the first time with the prevailing westerly air currents and are dammed up. As a result, the clouds rise into higher layers of air, which are usually colder, condense and rain down in the form of downpours. Around 1100 mm of precipitation is recorded in Elberfeld, rising to 1200 mm in Barmen/Oberbarmen.
