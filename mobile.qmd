@@ -1,0 +1,22 @@
+---
+title: "Fabian Rosenthal"
+image: images/profile.png
+about:
+  template: jolla
+  links:
+    - icon: gravatar
+      text: Gravatar
+      href: https://gravatar.com/rosenthalfabian
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/fabian-rosenthal-mle
+    - icon: github
+      text: Github
+      href: https://github.com/radlfabs
+---
+
+Hi👋, I'm Fabian, a data scientist bridging machine learning and engineering.
+
+With a M.Sc. in Media Technology, I specialize in developing robust machine learning solutions that perform reliably across simple and critical applications. My research on uncertainty quantification and cross-validation has equipped me with deep insights into performance estimation and statistical computing. I love package development and open-sourced a Python package for complex cross-validation workflows.
+
+My interdisciplinary background—spanning audio engineering and data science—enables me to approach complex challenges with a holistic, end-to-end perspective. I'm passionate about working in cross-functional teams and collaborating with domain experts to deliver impactful solutions.
