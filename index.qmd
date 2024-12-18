@@ -1,22 +1,192 @@
 ---
-title: "Fabian Rosenthal"
-image: images/profile.png
-about:
-  template: jolla
-  links:
-    - icon: gravatar
-      text: Gravatar
-      href: https://gravatar.com/rosenthalfabian
-    - icon: linkedin
-      text: LinkedIn
-      href: https://www.linkedin.com/in/fabian-rosenthal-mle
-    - icon: github
-      text: Github
-      href: https://github.com/radlfabs
+# title: "Fabian Rosenthal"
+# image: images/profile.png
+format: 
+  closeread-html:
+    css: closeread.css
+    fontsize: 20px
+      
+# about:
+#   template: jolla
+#   links:
+#     - icon: gravatar
+#       text: Gravatar
+#       href: https://gravatar.com/rosenthalfabian
+#     - icon: linkedin
+#       text: LinkedIn
+#       href: https://www.linkedin.com/in/fabian-rosenthal-mle
+#     - icon: github
+#       text: Github
+#       href: https://github.com/radlfabs
 ---
 
-Hi👋, I'm Fabian, a data scientist bridging machine learning and engineering.
+<script>
+  function isMobileDevice() {
+      return window.innerWidth <= 768;
+  }
 
-With a M.Sc. in Media Technology, I specialize in developing robust machine learning solutions that perform reliably across simple and critical applications. My research on uncertainty quantification and cross-validation has equipped me with deep insights into performance estimation and statistical computing. I love package development and open-sourced a Python package for complex cross-validation workflows.
+  if (isMobileDevice() && !window.location.pathname.includes('mobile')) {
+      window.location.href = 'mobile.html';
+  };
+</script>
 
+:::{.cr-section}
+
+:::{focus-on="cr-panel" pan-to="10%,10%" scale-by="2.5"}
+# Hi👋, I'm Fabian, a data scientist bridging machine learning and engineering.
+Scroll down and join me on my journey.
+:::
+
+
+:::{#cr-panel}
+![](images/panel_helio.png)
+:::
+
+<div class="arrow-down">
+  
+  
+  <div class="left"></div>
+  <div class="right"></div>
+  
+</div>
+
+<script>
+  document.addEventListener('scroll', function() {
+  const arrowDown = document.querySelector('.arrow-down');
+  if (window.scrollY > 100) { // Adjust the threshold as needed
+    arrowDown.style.opacity = '0';
+    arrowDown.style.visibility = 'hidden';
+  } else {
+    arrowDown.style.opacity = '1';
+    arrowDown.style.visibility = 'visible';
+  }
+});
+</script>
+
+:::{focus-on="cr-panel" scale-by="1"}
+## Fabian Rosenthal
+
+*Data Scientist* <br><br>
+
+With a M.Sc. in Media Technology, I specialize in developing robust machine learning solutions that perform reliably across simple and critical applications.
+:::
+
+
+:::{focus-on="cr-panel" pan-to="200%,-30%" scale-by="5"}
+##### Spezialization
+My research on uncertainty quantification and cross-validation has equipped me with deep insights into performance estimation and statistical computing. This allows me to make data-driven decisions.
+:::
+
+
+:::{focus-on="cr-panel" pan-to="150%,60%" scale-by="4"}
+##### Projects
+In my projects I like to incorporate my knowledge to build reliable solutions. 
+:::
+
+:::{focus-on="cr-panel" pan-to="150%,60%" scale-by="4"}
+##### Projects
+In this forecasting of bicycle demand in Cologne, I incorporated prediciton intervals to account for the uncertainty in the model. This gives more insights to the stakeholders and helps to make better decisions.
+:::
+
+
+:::{focus-on="cr-panel" pan-to="350%,-210%" scale-by="10"}
+##### Master thesis
+In my thesis at Fraunhofer MEVIS I trained 4+ million models to find appropriate methods to get confidence intervals for cross-validation estimates. 
+:::
+
+:::{focus-on="cr-panel" pan-to="90%,-105%" scale-by="3"}
+##### Master thesis
+The complex study design allowed me to analyse the operation characteristics of statistical methods and to derive recommendations for the application in practice.
+:::
+
+
+:::{focus-on="cr-panel" pan-to="150%,160%" scale-by="4"}
+##### Programming
+I loved the development of my package for complex cross-validation workflows: `flexcv`. It uses a class interface for setting up the experiments.
+:::
+
+:::{focus-on="cr-panel" pan-to="0%,20%" scale-by="1.5"}
+##### Work
+`flexcv` originated in my work at Hochschule Düsseldorf where I cross-validated a lot. 
+:::
+
+:::{focus-on="cr-panel" pan-to="10%,130%" scale-by="3.5"}
+##### Work
+In my 3 years as a student research assistant I developed the ML pipelines that are used in a study on sound perception in private dwellings. I was also responsible for the processing and feature engineering of the 6000+ audio recordings of our study.
+:::
+
+
+:::{focus-on="cr-panel" pan-to="-130%,140%" scale-by="3.5"}
+##### Work and Bachelors
+A comprehensive study on feature selection including 2000+ audio features was part of my Bachelor thesis. I presented my work at DAGA 2022 in Stuttgart.
+:::
+
+
+:::{focus-on="cr-panel" pan-to="-10%,40%" scale-by="2.5"}
+##### Background
+During my studies in audio and video engineering, I transitioned to a more data focused path.
+:::
+
+:::{focus-on="cr-panel" pan-to="-110%,10%" scale-by="3"}
+##### Background
+Learning about machine learning in a project on music recommender systems at Hochschule Düsseldorf was a game changer for me and motivated me to pursue a career in data science.
+:::
+
+<!-- :::{focus-on="cr-panel" pan-to="-70%,-115%" scale-by="4"} -->
+:::{focus-on="cr-words"}
+##### Background
+And on my journey I mastered a lot of languages, frameworks and tools.
+:::
+
+:::{#cr-words}
+![](images/wordcloud.png)
+:::
+
+
+:::{focus-on="cr-equation" scale-by="1"}
+##### Background
 My interdisciplinary background—spanning audio engineering and data science—enables me to approach complex challenges with a holistic, end-to-end perspective. I'm passionate about working in cross-functional teams and collaborating with domain experts to deliver impactful solutions.
+:::
+
+{{< spacer 5svh >}}
+
+Find out more about me and my work on the [portfolio page](/portfolio.qmd), read the [resume](/resume.qmd) and connect with me on [Linkedin {{< fa brands linkedin >}}](https://www.linkedin.com/in/fabian-rosenthal-mle) or [Github {{< fa brands github >}}](https://github.com/radlfabs).
+<br><br>
+This page was created with [Quarto](https://quarto.org/) and [Closeread](https://closeread.dev/).
+
+:::{#cr-equation}
+Let $W$ represent my work model
+$$
+W = \tau \cdot m \cdot ( b + P_i \cdot \gamma ) \\
+$$
+
+Objective: $\max_{m, \gamma,P}$
+
+Where:
+
+- $m$: Motivation with $m \sim \mathcal{U}[0.7, 1.0]$
+- $b$: Intercept denoting the engineering background
+- $P_i$: Matrix of $i$ personal trait properties
+- $\gamma$: Vector of learning rates 
+corresponding to $P_i$
+- $\tau$: Team spirit
+
+<!-- 
+
+Let $C$ represent my work character, where:
+$$
+C = M \cdot \left( E + P_i \cdot \gamma \right) \cdot \tau
+$$
+
+Where:
+
+- $M$: Motivation with $M \sim \mathcal{U}[0.7, 1.0]$
+- $E$: Intercept denoting the engineering background
+- $P_i$: Matrix of $i$ personal trait properties
+- $\gamma$: Learning rate
+- $\tau$: Team spirit -->
+
+:::
+
+
+:::

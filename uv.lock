@@ -1389,6 +1389,20 @@ wheels = [
 ]
 
 [[package]]
+name = "meteostat"
+version = "1.6.8"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+    { name = "pandas" },
+    { name = "pytz" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/7f/2f/06c2ec2c82341d76857d82359e12e49d94f45ed54169ae59f051ae288933/meteostat-1.6.8.tar.gz", hash = "sha256:e4e1e3df79e52d45116a12a5ac703acf75d521356de072052c1f60e42160a74d", size = 19188 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/90/23/34e8913fa75d064be09303914ea0056ef2968b639ebc8e70decfecd8299b/meteostat-1.6.8-py3-none-any.whl", hash = "sha256:859a7f2cbf3d902e9ce48363ff9490385a22296742ced7070360d06d3415ef97", size = 31436 },
+]
+
+[[package]]
 name = "mistune"
 version = "3.0.2"
 source = { registry = "https://pypi.org/simple" }
@@ -1818,6 +1832,7 @@ dependencies = [
     { name = "ipywidgets" },
     { name = "jupyter" },
     { name = "mapie" },
+    { name = "meteostat" },
     { name = "numba" },
     { name = "optuna" },
     { name = "pandas" },
@@ -1849,6 +1864,7 @@ requires-dist = [
     { name = "ipywidgets", specifier = ">=8.1.5" },
     { name = "jupyter", specifier = ">=1.1.1" },
     { name = "mapie", specifier = ">=0.9.1" },
+    { name = "meteostat", specifier = ">=1.6.8" },
     { name = "numba", specifier = "==0.60.0" },
     { name = "optuna", specifier = ">=4.1.0" },
     { name = "pandas", specifier = ">=2.2.3" },
