@@ -39,7 +39,7 @@ Scroll down and join me on my journey.
 
 
 :::{#cr-panel}
-![](images/panel_helio.png)
+![](images/panel_helio_small.png)
 :::
 
 <div class="arrow-down">
