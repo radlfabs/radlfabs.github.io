@@ -86,6 +86,7 @@ Package-wise we will use `polars` and `pandas` for data manipulation, `optuna` f
 9.  Drop rows with missing values. Some files even have blank rows in between.
 
 ```{python echo=FALSE}
+#| cache: true
 def read_in(url):
     expr = pl.col("month")
     for old, new in months_lookup.items():
@@ -143,6 +144,7 @@ def get_yearly_sums(df):
 We can use this in a list comprehension to download and concatenate all `.csv` files from the portal. The links are stored in a text file. So we will read it's lines first. The second part includes some feature engineering, that might get moved later on.
 
 ```{python}
+#| cache: true
 working_dir_path = Path(".")
 links_file = working_dir_path / "links/links.txt"
 
@@ -172,6 +174,7 @@ GT(
 ```
 
 ```{python}
+#| cache: true
 fig, ax = plt.subplots(figsize=(8, 10))
 
 # create lollipop chart
@@ -211,6 +214,7 @@ plt.show()
 Zülpicher Straße is one of the first locations equipped with a counter, and counts the second most bicycles evcery year. We will plot the data with `plotly` to make it interactive. A trendline helps understand the general development of the counts.
 
 ```{python}
+#| cache: true
 zuelpicher = (
     df
     .filter(pl.col("location") == "Zülpicher Straße").sort("date")
@@ -236,7 +240,8 @@ fig.show()
 
 In order to draw the counting stations on a map, we need their locations. Since open data Cologne does not provide this information, we will use the `geopy` library to scrape the data from OpenStreetMap---specifically, we use the `Nominatim` geocoder. We will store the data in a dictionary and convert it to a `pd.DataFrame` for better handling. The call `geolocator.geocode(loc + ", Köln, Germany")` makes a request to the Nominatim API and returns the location of the adress. So this is only approximate, as the exact counter location may differ from the address.
 
-```{python cache=TRUE}
+```{python}
+#| cache: true
 geolocator = Nominatim(user_agent="myapp")
 
 coordinates = {}
@@ -260,6 +265,7 @@ counter_geo["yearly_sums_avg"] = counter_geo["yearly_sums_avg"].astype("float64"
 Now let's put everything together and make an interactive plot. We will use `plotly` to create a scattermapbox plot and a slider to switch between the dates.
 
 ```{python eval=FALSE}
+#| cache: true
 coord_pl = pl.DataFrame(coord_df)
 lon_mean = coord_pl["longitude"].mean()
 lat_mean = coord_pl["latitude"].mean()
@@ -361,7 +367,7 @@ fig.show()
 We will scrape the weather data from the web and extract the files necessary. The data is then loaded into a `pl.DataFrame` and cleaned. We mainly do some renaming and type casting. Lastly, we deselect some columns that are not needed.
 
 ```{python}
-
+#| cache: true
 weather_url = Path("links/weather.txt").read_text()
 data_path = Path("data")
 zip_path = data_path / "weather.zip"
@@ -414,6 +420,7 @@ GT(weather_df.sample(10))
 ```
 
 ```{python}
+#| cache: true
 weather_detail = (
     weather_df
     .filter(pl.col("date") >= zuelpicher["date"].min())
@@ -440,6 +447,7 @@ fig.show()
 We merge the weather data with the bicycle counts. We will use a left join, because we want to keep all the bicycle counts. In a second step, we will split the data into a training and a test set. The data from year 2022 will be used for testing, only. We can split the data by filtering the `date` column.
 
 ```{python}
+#| cache: true
 ml_data = df.join(weather_df, on="date", how="left")
 train_data = ml_data.filter(pl.col("date") < datetime(2022, 1, 1))
 test_data = ml_data.filter(pl.col("date") >= datetime(2022, 1, 1))
@@ -456,7 +464,7 @@ Let's define some `sklearn` transformers to perform feature engineering. We will
 
 ```{python}
 #| eval: False
-
+#| cache: true
 def make_feature_transformer(X):
     numerical_columns = X.select_dtypes(include=np.number).columns.tolist()
     categorical_columns = X.select_dtypes(include=['object', 'category']).columns.tolist()
@@ -496,7 +504,7 @@ def make_feature_transformer(X):
 Next we will define a custom objective function, that we want to minimize. The function will be called by Optuna and will return the negative RMSE of the cross-validated model. We will use the `XGBRegressor` from `XGBoost` as the model and the transformer as shown in the code block above.
 
 ```{python}
-
+#| cache: true
 def objective(trial, X_train, y_train):
     col_transformer = make_feature_transformer(X_train)
 
@@ -535,7 +543,7 @@ In order to fit and predict for multiple counter locations, we will have to writ
 
 ```{python}
 #| eval: False
-
+#| cache: true
 class SimpleModel():
     def __init__(self, fixed_params=None, cache_dir='optimization_cache'):
         if fixed_params is None:
@@ -776,7 +784,8 @@ class SimpleModel():
 
 As all necessary boilerplate code is already written in the `BicyclePredictor` class, we can now use it with very little code.
 
-```{python cache=TRUE}
+```{python}
+#| cache: true
 import joblib
 from model_class import SimpleModel
 
@@ -797,6 +806,7 @@ Finally, we can evaluate the tuned pipeline of transformers and models on the ev
 
 ```{python}
 #| warning: false
+#| cache: true
 metrics_df = ml_pipeline.eval(test_data)
 
 (
@@ -814,6 +824,7 @@ First, let's start with some location that did really bad:
 
 ```{python}
 #| warning: false
+#| cache: true
 ml_pipeline.plot_predictions(test_data, "Bonner Straße")
 ml_pipeline.plot_predictions(test_data, "Severinsbrücke")
 ```
@@ -838,8 +849,7 @@ We will define a new class `QuantileModels` that inherits from `BicyclePredictor
 This code combines some of the examples [here](https://mapie.readthedocs.io/en/latest/examples_regression/2-advanced-analysis/plot_timeseries_enbpi.html) and [here](https://mapie.readthedocs.io/en/latest/examples_regression/1-quickstart/plot_timeseries_example.html#sphx-glr-examples-regression-1-quickstart-plot-timeseries-example-py).
 ```{python}
 #| eval: False
-
-
+#| cache: true
 class MAPIEModel(SimpleModel):
     def set_succesful_studies(self, succesful_studies):
         self.succesful_studies = succesful_studies
@@ -986,7 +996,64 @@ else:
 
 Now let's plot our new prediction intervals and their mean predictions for the location "Venloer Straße" for the test year 2022.
 ```{python}
-quant_pipeline.plot_mapie(test_data, loc_str, alpha=0.05)
+def plot_external_args(pred_class, data, loc_str, alpha=0.05):
+    X_test = data.filter(data["location"] == loc_str).drop("count").to_pandas()
+    y_test = data.filter(data["location"] == loc_str)["count"].to_pandas()
+    y_pred, y_pis = pred_class.predict_mapie(X_test, loc_str=loc_str, alpha=alpha)
+
+    fig = go.Figure([
+        go.Scatter(
+            name=f'{(1 - alpha)*100}% PI',
+            x=X_test['date'],
+            y=y_pis[:, 1, 0],
+            mode='lines',
+            marker=dict(color="#444"),
+            line=dict(width=0),
+            showlegend=False
+        ),
+        go.Scatter(
+            name=f'{(1 - alpha)*100}% PI',
+            x=X_test['date'],
+            y=y_pis[:, 0, 0],
+            marker=dict(color="#444"),
+            line=dict(width=0),
+            mode='lines',
+            fillcolor='rgba(68, 68, 68, 0.3)',
+            fill='tonexty',
+            showlegend=True
+        ),
+        go.Scatter(
+            x=X_test["date"],
+            y=y_test,
+            name="Actual",
+            line=dict(color='rgb(31, 119, 180)'),
+            mode='lines'
+        ),
+        go.Scatter(
+            x=X_test["date"],
+            y=y_pred,
+            name="Predicted",
+            line=dict(color='rgb(255, 127, 14)'),
+            mode='lines'
+        )
+    ])
+    fig.update_layout(
+        title=dict(text=f"Prediction Intervals for {loc_str}"),
+        hovermode="x",
+        template="simple_white",
+        font_family="Times New Roman",
+        font_size=16,
+        width=800,
+        height=300
+        )
+    fig.update_xaxes(title_text='Date')
+    fig.update_yaxes(title_text='Count')
+    return fig
+
+
+# quant_pipeline.plot_mapie(test_data, loc_str, alpha=0.05)
+fig = plot_external_args(quant_pipeline, test_data, loc_str, alpha=0.05)
+fig
 ```
 
 The model is fairly uncertain, what the lower bound of bicycles counted is in the unseen time range. The upper bound at least includes all the actual counts. This is a good sign, but the model might be too conservative.

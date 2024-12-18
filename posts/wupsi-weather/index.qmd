@@ -2,7 +2,7 @@
 title: Recreating a temperature deviation chart for Wuppertal
 date: 2024-12-13
 author: Fabian Rosenthal
-categories: [climate, visualisation, Python]
+categories: [climate, visualization, Python]
 image: "images/image.png"
 bibliography: refs.bib
 ---

@@ -1,0 +1,25 @@
+﻿word;value
+Python;100
+R;100
+SQL;30
+LaTex;35
+Matlab;15
+Rust;10
+PyTorch;50
+scikit-learn;50
+Pandas;60
+Polars;40
+Arrow;30
+mlr3;30
+data.table;30
+tidyverse;20
+tidymodels;20
+Bokeh;20
+plotly;30
+Shap;20
+ggplot2;30
+Quarto;50
+Docker;30
+Tableau;15
+Linux CLI;25
+Parquet;10

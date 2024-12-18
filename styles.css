@@ -1,1 +1,6 @@
 /* css styles */
+
+.quarto-title > h1.title {
+    opacity: 0 !important;
+  }
+
