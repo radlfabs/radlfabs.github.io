@@ -1,0 +1,20 @@
+/* Closeread CSS styles */
+
+.cr-section.sticky-col.sticky-col-stack {
+    transition:
+      transform 3s ease-in-out !important;
+  }
+  
+  .cr-section .narrative-col {
+    padding-left: 30px;
+  }
+  
+  .cr-section .sticky-col {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  
+  #quarto-content .cr-section .narrative-col .trigger {
+    padding-top: 15svh;
+    padding-bottom: 25svh;
+  }

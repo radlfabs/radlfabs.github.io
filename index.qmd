@@ -1,22 +1,205 @@
 ---
-title: "Fabian Rosenthal"
-image: images/profile.png
-about:
-  template: jolla
-  links:
-    - icon: gravatar
-      text: Gravatar
-      href: https://gravatar.com/rosenthalfabian
-    - icon: linkedin
-      text: LinkedIn
-      href: https://www.linkedin.com/in/fabian-rosenthal-mle
-    - icon: github
-      text: Github
-      href: https://github.com/radlfabs
+# title: "Fabian Rosenthal"
+# image: images/profile.png
+format: 
+  closeread-html:
+    css: closeread.css
+    fontsize: 20px
+      
+# about:
+#   template: jolla
+#   links:
+#     - icon: gravatar
+#       text: Gravatar
+#       href: https://gravatar.com/rosenthalfabian
+#     - icon: linkedin
+#       text: LinkedIn
+#       href: https://www.linkedin.com/in/fabian-rosenthal-mle
+#     - icon: github
+#       text: Github
+#       href: https://github.com/radlfabs
 ---
 
-Hi👋, I'm Fabian, a data scientist bridging machine learning and engineering.
+:::{.cr-section}
 
-With a M.Sc. in Media Technology, I specialize in developing robust machine learning solutions that perform reliably across simple and critical applications. My research on uncertainty quantification and cross-validation has equipped me with deep insights into performance estimation and statistical computing. I love package development and open-sourced a Python package for complex cross-validation workflows.
+:::{focus-on="cr-panel" pan-to="100%,110%" scale-by="3"}
+# Hi👋, I'm Fabian, a data scientist bridging machine learning and engineering.
+:::
+<!-- 
+:::{#cr-start}
+![](images/pane_start.png)
+::: -->
 
+:::{#cr-panel}
+![](images/pane4.png)
+:::
+
+
+:::{focus-on="cr-panel" scale-by="1"}
+## Fabian Rosenthal
+
+*Data Scientist* <br><br>
+
+With a M.Sc. in Media Technology, I specialize in developing robust machine learning solutions that perform reliably across simple and critical applications.
+:::
+
+
+:::{focus-on="cr-panel" pan-to="200%,-10%" scale-by="5"}
+##### Spezialization
+My research on uncertainty quantification and cross-validation has equipped me with deep insights into performance estimation and statistical computing. This allows me to make data-driven decisions.
+:::
+
+
+:::{focus-on="cr-panel" pan-to="200%,-120%" scale-by="5"}
+##### Projects
+In my projects I like to incorporate my knowledge to build reliable solutions. 
+<br><br>
+:::
+
+:::{focus-on="cr-panel" pan-to="200%,-120%" scale-by="5"}
+##### Projects
+In this forecasting of bicycle demand in Cologne, I incorporated prediciton intervals to account for the uncertainty in the model. This gives more insights to the stakeholders and helps to make better decisions.
+:::
+
+
+:::{focus-on="cr-panel" pan-to="150%,-180%" scale-by="4"}
+##### Master thesis
+In my thesis at Fraunhofer MEVIS I trained 4+ million models to find appropriate methods to get confidence intervals for cross-validation estimates. 
+:::
+
+:::{focus-on="cr-panel" pan-to="20%,-180%" scale-by="4"}
+##### Master thesis
+The complex study design allowed me to analyse the operation characteristics of statistical methods and to derive recommendations for the application in practice.
+:::
+
+
+:::{focus-on="cr-panel" pan-to="0%,50%" scale-by="4"}
+##### Programming
+I loved the development of my package for complex cross-validation workflows: `flexcv`. It uses a class interface for setting up the experiments.
+:::
+
+<!-- :::{#cr-flexcv .scale-to-fill}
+```{python eval=FALSE}
+#| echo: true
+#| eval: false
+#| code-fold: false
+from flexcv import CrossValidation
+
+cv = CrossValidation()
+
+(   
+  cv
+  .set_data(X, y, group)
+  .set_splits(
+    method_outer_split="GroupKFold", 
+    method_inner_split="KFold"
+    )
+  .add_model(RandomForestRegressor)
+  .perform()
+  .get_results()
+)
+```
+::: -->
+
+:::{focus-on="cr-panel" pan-to="0%,50%" scale-by="1.5"}
+##### Work
+`flexcv` originated in my work at Hochschule Düsseldorf where I cross-validated a lot. 
+:::
+
+:::{focus-on="cr-panel" pan-to="0%,150%" scale-by="4"}
+##### Work
+In my 3 years as a student research assistant I developed the ML pipelines that are used in a study on sound perception in private dwellings. I was also responsible for the processing and feature engineering of the 6000+ audio recordings of our study.
+:::
+
+
+:::{focus-on="cr-panel" pan-to="-150%,150%" scale-by="4"}
+##### Work and Bachelors
+A comprehensive study on feature selection including 2000+ audio features was part of my Bachelor thesis. I presented my work at DAGA 2022 in Stuttgart.
+:::
+
+
+:::{focus-on="cr-panel" scale-by="0.7"}
+##### Background
+During my studies in audio and video engineering, I transitioned to a more data focused path.
+:::
+
+:::{focus-on="cr-panel" pan-to="-80%,-10%" scale-by="2"}
+##### Background
+Learning about machine learning in a project on music recommender systems at Hochschule Düsseldorf was a game changer for me and motivated me to pursue a career in data science.
+:::
+
+:::{focus-on="cr-panel" pan-to="0%,-10%" scale-by="2"}
+##### Background
+And on my journey I mastered a lot of languages, frameworks and tools.
+:::
+
+<!-- 
+:::{#cr-tools}
+```{r, dev = "png", dev.args=list(bg="transparent")}
+#| echo: false
+#| warning: false
+library(ggwordcloud)
+my_words  <- readr::read_delim("data/words.csv", delim = ";")
+ggplot(my_words, aes(label = word, size = value)) +
+  geom_text_wordcloud() +
+  scale_size_area(max_size = 75) +
+  theme_minimal()
+
+ggsave("images/wordcloud.png", width = 40, height = 30, dpi = 300)
+  # theme(
+  #   panel.background = element_rect(fill='transparent'),
+  #   plot.background = element_rect(fill='transparent', color=NA),
+  #   panel.grid.major = element_blank(),
+  #   panel.grid.minor = element_blank(),
+  #   legend.background = element_rect(fill='transparent'),
+  #   legend.box.background = element_rect(fill='transparent')
+  # )
+```
+::: -->
+
+:::{focus-on="cr-equation" scale-by="1"}
+##### Background
 My interdisciplinary background—spanning audio engineering and data science—enables me to approach complex challenges with a holistic, end-to-end perspective. I'm passionate about working in cross-functional teams and collaborating with domain experts to deliver impactful solutions.
+<br><br>
+Find out more about me and my work here: 
+[{{< fa brands linkedin >}}](https://www.linkedin.com/in/fabian-rosenthal-mle) 
+[{{< fa brands github >}}](https://github.com/radlfabs)
+:::
+
+
+:::{#cr-equation}
+Let $W$ represent my work model
+$$
+W = \tau M \cdot ( E + P_i \cdot \gamma ) \\
+$$
+
+Objective: $\max_{\gamma,P}$
+
+Where:
+
+- $M$: Motivation with $M \sim \mathcal{U}[0.7, 1.0]$
+- $E$: Intercept denoting the engineering background
+- $P_i$: Matrix of $i$ personal trait properties
+- $\gamma$: Vector of learning rates 
+corresponding to $P_i$
+- $\tau$: Team spirit
+
+<!-- 
+
+Let $C$ represent my work character, where:
+$$
+C = M \cdot \left( E + P_i \cdot \gamma \right) \cdot \tau
+$$
+
+Where:
+
+- $M$: Motivation with $M \sim \mathcal{U}[0.7, 1.0]$
+- $E$: Intercept denoting the engineering background
+- $P_i$: Matrix of $i$ personal trait properties
+- $\gamma$: Learning rate
+- $\tau$: Team spirit -->
+
+:::
+
+
+:::
