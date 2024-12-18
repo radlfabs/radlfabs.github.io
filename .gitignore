@@ -38,3 +38,7 @@ posts/bicycle/.env
 *.pkl
 /posts/*/*.quarto_ipynb
 posts/realtime-bicycles/.env
+/_extensions
+/docs
+/docs
+/index_files
