@@ -37,9 +37,9 @@ format:
 Scroll down and join me on my journey.
 :::
 
-
 :::{#cr-panel}
-![](images/panel_helio_small.png)
+![](images/panel.jpg)
+
 :::
 
 <div class="arrow-down">
@@ -132,8 +132,8 @@ During my studies in audio and video engineering, I transitioned to a more data 
 Learning about machine learning in a project on music recommender systems at Hochschule Düsseldorf was a game changer for me and motivated me to pursue a career in data science.
 :::
 
-<!-- :::{focus-on="cr-panel" pan-to="-70%,-115%" scale-by="4"} -->
-:::{focus-on="cr-words"}
+:::{focus-on="cr-panel" pan-to="-60%,-100%" scale-by="3.5"}
+<!-- :::{focus-on="cr-panel" pan-to="-00%,-100%" scale-by="3"} -->
 ##### Background
 And on my journey I mastered a lot of languages, frameworks and tools.
 :::
