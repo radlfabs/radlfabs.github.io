@@ -90,3 +90,18 @@
   }
 }
   
+/* 
+body {
+  margin: 0;
+  overflow-y: scroll;
+} */
+
+.background {
+  position: absolute;
+  width: 3000px;
+  height: 3000px;
+}
+
+.image {
+  position: relative;
+}
