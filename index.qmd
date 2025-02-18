@@ -19,7 +19,6 @@ format:
 #       text: Github
 #       href: https://github.com/radlfabs
 ---
-
 <script>
   function isMobileDevice() {
       return window.innerWidth <= 768;
@@ -33,7 +32,7 @@ format:
 :::{.cr-section}
 
 :::{focus-on="cr-panel" pan-to="10%,10%" scale-by="2.5"}
-# Hi👋, I'm Fabian, a data scientist bridging machine learning and engineering.
+## Hi👋, I'm Fabian, a data scientist bridging machine learning and engineering.
 Scroll down and join me on my journey.
 :::
 
@@ -42,7 +41,7 @@ Scroll down and join me on my journey.
 
 :::
 
-<div class="arrow-down">
+<!-- <div class="arrow-down">
   
   
   <div class="left"></div>
@@ -61,7 +60,7 @@ Scroll down and join me on my journey.
     arrowDown.style.visibility = 'visible';
   }
 });
-</script>
+</script> -->
 
 :::{focus-on="cr-panel" scale-by="1"}
 ## Fabian Rosenthal
