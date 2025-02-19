@@ -43,3 +43,6 @@ images/panel_landscape.drawio
 /index_files
 /docs
 trained_models
+/posts/bicycle/data/Meta*
+/posts/bicycle/data/train_data.csv
+docs
