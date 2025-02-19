@@ -39,3 +39,6 @@ posts/bicycle/.env
 /posts/*/*.quarto_ipynb
 posts/realtime-bicycles/.env
 images/panel_landscape.drawio
+/_extensions
+/index_files
+/docs
