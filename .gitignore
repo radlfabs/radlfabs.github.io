@@ -31,18 +31,17 @@ posts/bicycle/data/weather.zip
 /.quarto/
 /_site/
 /_freeze
-/docs
 posts/bicycle/.env
-# /posts
-/docs
+
 *.pkl
 /posts/*/*.quarto_ipynb
 posts/realtime-bicycles/.env
 images/panel_landscape.drawio
 /_extensions
 /index_files
-/docs
 trained_models
 /posts/bicycle/data/Meta*
-/posts/bicycle/data/train_data.csv
 docs
+
+posts/realtime-bicycles/data/inference_data.json
+posts/bicycle/data/train_data.csv
