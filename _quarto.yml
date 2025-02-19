@@ -1,0 +1,51 @@
+project:
+  type: website
+  output-dir: docs
+
+knitr:
+  opts_chunk: 
+    collapse: true
+
+website:
+  title: "Fabian Rosenthal"
+  favicon: "images/profile.png"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: portfolio.qmd
+        text: Portfolio
+      - href: resume.qmd
+        text: Resume
+    right:
+      - icon: envelope
+        href: mailto:radlfabs@tuta.io
+      - icon: github
+        href: https://github.com/radlfabs
+      - icon: linkedin
+        href: https://www.linkedin.com/in/fabian-rosenthal-mle
+
+  page-footer:
+    center: 
+      - href: mailto:radlfabs@tuta.io
+        text: Contact Fabian Rosenthal
+    right:
+      - href: LICENSE.md
+        text: License
+      - href: impressum.qmd
+        text: Impressum
+      - href: datenschutz.qmd
+        text: Privacy statement
+        
+
+format:
+  html:
+    theme:
+      light: flatly
+      dark: darkly
+    css: styles.css
+    toc: true
+    code-fold: true
+
+
+
