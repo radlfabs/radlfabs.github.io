@@ -1,67 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://radlfabs.github.io/resume.html</loc>
-    <lastmod>2025-02-19T16:12:14.129Z</lastmod>
-  </url>
-  <url>
-    <loc>https://radlfabs.github.io/posts/whitebalance/index.html</loc>
-    <lastmod>2025-02-19T16:12:14.105Z</lastmod>
-  </url>
-  <url>
-    <loc>https://radlfabs.github.io/posts/thesis/tables/results_table_1st_full.html</loc>
-    <lastmod>2025-02-19T16:12:14.054Z</lastmod>
-  </url>
-  <url>
-    <loc>https://radlfabs.github.io/posts/soundscape-viz/index.html</loc>
-    <lastmod>2025-02-19T16:12:14.023Z</lastmod>
-  </url>
-  <url>
-    <loc>https://radlfabs.github.io/posts/flexcv/index.html</loc>
-    <lastmod>2025-02-19T16:12:13.981Z</lastmod>
-  </url>
-  <url>
-    <loc>https://radlfabs.github.io/portfolio.html</loc>
-    <lastmod>2025-02-19T16:12:13.902Z</lastmod>
-  </url>
-  <url>
-    <loc>https://radlfabs.github.io/LICENSE.html</loc>
-    <lastmod>2025-02-19T16:12:11.682Z</lastmod>
+    <loc>https://radlfabs.github.io/mobile.html</loc>
+    <lastmod>2025-05-20T12:44:18.005Z</lastmod>
   </url>
   <url>
     <loc>https://radlfabs.github.io/impressum.html</loc>
-    <lastmod>2025-02-19T15:14:01.592Z</lastmod>
+    <lastmod>2025-05-20T12:34:05.825Z</lastmod>
+  </url>
+  <url>
+    <loc>https://radlfabs.github.io/LICENSE.html</loc>
+    <lastmod>2025-05-20T12:34:05.369Z</lastmod>
   </url>
   <url>
     <loc>https://radlfabs.github.io/datenschutz.html</loc>
-    <lastmod>2025-02-19T16:12:11.702Z</lastmod>
+    <lastmod>2025-05-20T12:34:05.369Z</lastmod>
   </url>
   <url>
     <loc>https://radlfabs.github.io/index.html</loc>
-    <lastmod>2025-02-19T16:12:13.900Z</lastmod>
-  </url>
-  <url>
-    <loc>https://radlfabs.github.io/mobile.html</loc>
-    <lastmod>2025-02-19T16:12:13.902Z</lastmod>
-  </url>
-  <url>
-    <loc>https://radlfabs.github.io/posts/bicycle/index.html</loc>
-    <lastmod>2025-02-19T16:12:13.938Z</lastmod>
-  </url>
-  <url>
-    <loc>https://radlfabs.github.io/posts/realtime-bicycles/index.html</loc>
-    <lastmod>2025-02-19T16:12:14.015Z</lastmod>
-  </url>
-  <url>
-    <loc>https://radlfabs.github.io/posts/thesis/index.html</loc>
-    <lastmod>2025-02-19T17:09:38.586Z</lastmod>
-  </url>
-  <url>
-    <loc>https://radlfabs.github.io/posts/thesis/tables/results_table_2nd_full.html</loc>
-    <lastmod>2025-02-19T16:12:14.055Z</lastmod>
-  </url>
-  <url>
-    <loc>https://radlfabs.github.io/posts/wupsi-weather/index.html</loc>
-    <lastmod>2025-02-19T16:12:14.126Z</lastmod>
+    <lastmod>2025-05-20T12:47:59.921Z</lastmod>
   </url>
 </urlset>
