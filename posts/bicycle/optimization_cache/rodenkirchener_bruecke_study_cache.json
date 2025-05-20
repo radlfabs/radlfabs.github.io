@@ -1,1 +1,0 @@
-{"Rodenkirchener Br\u00fccke": {"best_params": {"eta": 0.06250291831167225, "gamma": 168, "max_depth": 32, "min_child_weight": 0, "max_delta_step": 90, "subsample": 0.5115495808570035, "colsample_bytree": 0.5785687535411015, "reg_alpha": 999, "reg_lambda": 441}, "best_value": 5627.958266017785}}

@@ -41,7 +41,6 @@ images/panel_landscape.drawio
 /index_files
 trained_models
 /posts/bicycle/data/Meta*
-docs
 
 posts/realtime-bicycles/data/inference_data.json
 posts/bicycle/data/train_data.csv

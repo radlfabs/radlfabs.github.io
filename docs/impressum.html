@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Fabian Rosenthal</title>
+<title>Impressum – Fabian Rosenthal</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -37,15 +37,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-ca4cdd6bbe55c7409825f4149d735892.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<script src="site_libs/quarto-contrib/intersection-observer-polyfill-1.0.0/intersection-observer.js"></script>
-<script src="site_libs/quarto-contrib/scrollama-3.2.0/scrollama.min.js"></script>
-<script src="site_libs/quarto-contrib/closeread-0.1.0/closeread.js"></script>
-<link href="site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
-<link href="site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-cc63fce9873912f1bbbccf05079cc9ea.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-08799928d293638fe9563d5c5a2794e5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-cc63fce9873912f1bbbccf05079cc9ea.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -73,44 +72,174 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<meta cr-debug-mode="false">
-<meta cr-remove-header-space="false">
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="site_libs/quarto-contrib/quarto-project/qmd-lab/closeread/closeread.css">
-<link rel="stylesheet" href="closeread.css">
+<link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -128,7 +257,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
 </ul>
@@ -162,218 +291,73 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Impressum</h1>
+</div>
 
 
 
+<div class="quarto-title-meta">
 
-<script>
-  function isMobileDevice() {
-      return window.innerWidth <= 768;
-  }
-
-  if (isMobileDevice() && !window.location.pathname.includes('mobile')) {
-      window.location.href = 'mobile.html';
-  };
-</script>
-<div class="cr-section cr-column-screen sidebar-left">
-<div class="narrative-col">
-<div class="trigger new-trigger" data-pan-to="10%,10%" data-scale-by="2.5" data-focus-on="cr-panel">
-<div class="narrative">
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>You are visiting an old version of my homepage. Please got to <a href="https://fabianrosenthal.eu">https://fabianrosenthal.eu</a> for the most recent version instead.</p>
-</div>
-</div>
-<section id="hi-im-fabian-a-data-scientist-bridging-machine-learning-and-engineering." class="level2">
-<h2 class="anchored" data-anchor-id="hi-im-fabian-a-data-scientist-bridging-machine-learning-and-engineering.">Hi👋, I’m Fabian, a data scientist bridging machine learning and engineering.</h2>
-<p>Visit the recent version of my journey here: <a href="https://fabianrosenthal.eu">https://fabianrosenthal.eu</a>! But since you’re here, scroll down and join me on my journey!</p>
-</section>
-</div>
-</div>
-<div class="trigger">
-<div class="narrative">
-<!-- <div class="arrow-down">
+    
   
+    
+  </div>
   
-  <div class="left"></div>
-  <div class="right"></div>
-  
-</div>
-
-<script>
-  document.addEventListener('scroll', function() {
-  const arrowDown = document.querySelector('.arrow-down');
-  if (window.scrollY > 100) { // Adjust the threshold as needed
-    arrowDown.style.opacity = '0';
-    arrowDown.style.visibility = 'hidden';
-  } else {
-    arrowDown.style.opacity = '1';
-    arrowDown.style.visibility = 'visible';
-  }
-});
-</script> -->
-</div>
-</div>
-<div class="trigger new-trigger" data-scale-by="1" data-focus-on="cr-panel">
-<section id="fabian-rosenthal" class="level2 narrative">
-<h2 class="anchored" data-anchor-id="fabian-rosenthal">Fabian Rosenthal</h2>
-<p><em>Data Scientist</em> <br><br></p>
-<p>With a M.Sc. in Media Technology, I specialize in developing robust machine learning solutions that perform reliably across simple and critical applications.</p>
-</section>
-</div>
-<div class="trigger new-trigger" data-pan-to="200%,-30%" data-scale-by="5" data-focus-on="cr-panel">
-<section id="spezialization" class="level5 narrative">
-<h5 class="anchored" data-anchor-id="spezialization">Spezialization</h5>
-<p>My research on uncertainty quantification and cross-validation has equipped me with deep insights into performance estimation and statistical computing. This allows me to make data-driven decisions.</p>
-</section>
-</div>
-<div class="trigger new-trigger" data-pan-to="150%,60%" data-scale-by="4" data-focus-on="cr-panel">
-<section id="projects" class="level5 narrative">
-<h5 class="anchored" data-anchor-id="projects">Projects</h5>
-<p>In my projects I like to incorporate my knowledge to build reliable solutions.</p>
-</section>
-</div>
-<div class="trigger new-trigger" data-pan-to="150%,60%" data-scale-by="4" data-focus-on="cr-panel">
-<section id="projects-1" class="level5 narrative">
-<h5 class="anchored" data-anchor-id="projects-1">Projects</h5>
-<p>In this forecasting of bicycle demand in Cologne, I incorporated prediciton intervals to account for the uncertainty in the model. This gives more insights to the stakeholders and helps to make better decisions.</p>
-</section>
-</div>
-<div class="trigger new-trigger" data-pan-to="350%,-210%" data-scale-by="10" data-focus-on="cr-panel">
-<section id="master-thesis" class="level5 narrative">
-<h5 class="anchored" data-anchor-id="master-thesis">Master thesis</h5>
-<p>In my thesis at Fraunhofer MEVIS I trained 4+ million models to find appropriate methods to get confidence intervals for cross-validation estimates.</p>
-</section>
-</div>
-<div class="trigger new-trigger" data-pan-to="90%,-105%" data-scale-by="3" data-focus-on="cr-panel">
-<section id="master-thesis-1" class="level5 narrative">
-<h5 class="anchored" data-anchor-id="master-thesis-1">Master thesis</h5>
-<p>The complex study design allowed me to analyse the operation characteristics of statistical methods and to derive recommendations for the application in practice.</p>
-</section>
-</div>
-<div class="trigger new-trigger" data-pan-to="150%,160%" data-scale-by="4" data-focus-on="cr-panel">
-<section id="programming" class="level5 narrative">
-<h5 class="anchored" data-anchor-id="programming">Programming</h5>
-<p>I loved the development of my package for complex cross-validation workflows: <code>flexcv</code>. It uses a class interface for setting up the experiments.</p>
-</section>
-</div>
-<div class="trigger new-trigger" data-pan-to="0%,20%" data-scale-by="1.5" data-focus-on="cr-panel">
-<section id="work" class="level5 narrative">
-<h5 class="anchored" data-anchor-id="work">Work</h5>
-<p><code>flexcv</code> originated in my work at Hochschule Düsseldorf where I cross-validated a lot.</p>
-</section>
-</div>
-<div class="trigger new-trigger" data-pan-to="10%,130%" data-scale-by="3.5" data-focus-on="cr-panel">
-<section id="work-1" class="level5 narrative">
-<h5 class="anchored" data-anchor-id="work-1">Work</h5>
-<p>In my 3 years as a student research assistant I developed the ML pipelines that are used in a study on sound perception in private dwellings. I was also responsible for the processing and feature engineering of the 6000+ audio recordings of our study.</p>
-</section>
-</div>
-<div class="trigger new-trigger" data-pan-to="-130%,140%" data-scale-by="3.5" data-focus-on="cr-panel">
-<section id="work-and-bachelors" class="level5 narrative">
-<h5 class="anchored" data-anchor-id="work-and-bachelors">Work and Bachelors</h5>
-<p>A comprehensive study on feature selection including 2000+ audio features was part of my Bachelor thesis. I presented my work at DAGA 2022 in Stuttgart.</p>
-</section>
-</div>
-<div class="trigger new-trigger" data-pan-to="-10%,40%" data-scale-by="2.5" data-focus-on="cr-panel">
-<section id="background" class="level5 narrative">
-<h5 class="anchored" data-anchor-id="background">Background</h5>
-<p>During my studies in audio and video engineering, I transitioned to a more data focused path.</p>
-</section>
-</div>
-<div class="trigger new-trigger" data-pan-to="-110%,10%" data-scale-by="3" data-focus-on="cr-panel">
-<section id="background-1" class="level5 narrative">
-<h5 class="anchored" data-anchor-id="background-1">Background</h5>
-<p>Learning about machine learning in a project on music recommender systems at Hochschule Düsseldorf was a game changer for me and motivated me to pursue a career in data science.</p>
-</section>
-</div>
-<div class="trigger new-trigger" data-pan-to="-60%,-100%" data-scale-by="3.5" data-focus-on="cr-panel">
-<div class="narrative">
-<!-- :::{focus-on="cr-panel" pan-to="-00%,-100%" scale-by="3"} -->
-<section id="background-2" class="level5">
-<h5 class="anchored" data-anchor-id="background-2">Background</h5>
-<p>And on my journey I mastered a lot of languages, frameworks and tools.</p>
-</section>
-</div>
-</div>
-<div class="trigger new-trigger" data-scale-by="1" data-focus-on="cr-equation">
-<section id="background-3" class="level5 narrative">
-<h5 class="anchored" data-anchor-id="background-3">Background</h5>
-<p>My interdisciplinary background—spanning audio engineering and data science—enables me to approach complex challenges with a holistic, end-to-end perspective. I’m passionate about working in cross-functional teams and collaborating with domain experts to deliver impactful solutions.</p>
-</section>
-</div>
-<div class="trigger">
-<div class="narrative">
-<div class="cr-spacer" style="padding-block: 2.5svh;">
-
-</div>
-</div>
-</div>
-<div class="trigger">
-<div class="narrative">
-<p>Find out more about me and my work on <a href="https://fabianrosenthal.eu">https://fabianrosenthal.eu</a> and connect with me on <a href="https://www.linkedin.com/in/fabian-rosenthal-mle">Linkedin <i class="fa-brands fa-linkedin" aria-label="linkedin"></i></a> or <a href="https://github.com/radlfabs">Github <i class="fa-brands fa-github" aria-label="github"></i></a>. <br><br> This page was created with <a href="https://quarto.org/">Quarto</a> and <a href="https://closeread.dev/">Closeread</a>.</p>
-</div>
-</div>
-</div>
-<div class="sticky-col">
-<div class="sticky-col-stack">
-<div id="cr-panel" class="sticky">
-<p><img src="images/panel.jpg" class="img-fluid"></p>
-</div>
-<div id="cr-words" class="sticky">
-<p><img src="images/wordcloud.png" class="img-fluid"></p>
-</div>
-<div id="cr-equation" class="sticky">
-<p>Let <span class="math inline">\(W\)</span> represent my work model <span class="math display">\[
-W = \tau \cdot m \cdot ( b + P_i \cdot \gamma ) \\
-\]</span></p>
-<p>Objective: <span class="math inline">\(\max_{m, \gamma,P}\)</span></p>
-<p>Where:</p>
-<ul>
-<li><span class="math inline">\(m\)</span>: Motivation with <span class="math inline">\(m \sim \mathcal{U}[0.7, 1.0]\)</span></li>
-<li><span class="math inline">\(b\)</span>: Intercept denoting the engineering background</li>
-<li><span class="math inline">\(P_i\)</span>: Matrix of <span class="math inline">\(i\)</span> personal trait properties</li>
-<li><span class="math inline">\(\gamma\)</span>: Vector of learning rates corresponding to <span class="math inline">\(P_i\)</span></li>
-<li><span class="math inline">\(\tau\)</span>: Team spirit</li>
-</ul>
-<!-- 
-
-Let $C$ represent my work character, where:
-$$
-C = M \cdot \left( E + P_i \cdot \gamma \right) \cdot \tau
-$$
-
-Where:
-
-- $M$: Motivation with $M \sim \mathcal{U}[0.7, 1.0]$
-- $E$: Intercept denoting the engineering background
-- $P_i$: Matrix of $i$ personal trait properties
-- $\gamma$: Learning rate
-- $\tau$: Team spirit -->
-</div>
-</div>
-</div>
-</div>
 
 
+</header>
+
+
+<section id="anbieter" class="level5">
+<h5 class="anchored" data-anchor-id="anbieter">Anbieter</h5>
+<p>Fabian Rosenthal<br>
+c/o MDC Management#776<br>
+Welserstraße 3<br>
+87463 Dietmannsried</p>
+</section>
+<section id="kontakt" class="level5">
+<h5 class="anchored" data-anchor-id="kontakt">Kontakt</h5>
+<p>E-Mail: <a href="mailto:radlfabs@tuta.io">radlfabs@tuta.io</a><br>
+Threema: <a href="https://threema.id/R5PREUEN">R5PREUEN</a></p>
+</section>
+<section id="verantwortlich-nach-55-abs.2-rstv" class="level5">
+<h5 class="anchored" data-anchor-id="verantwortlich-nach-55-abs.2-rstv">Verantwortlich nach § 55 Abs.2 RStV</h5>
+<p>Fabian Rosenthal<br>
+c/o MDC Management#776<br>
+Welserstraße 3<br>
+87463 Dietmannsried</p>
+
+
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -794,7 +778,7 @@ Where:
 </a>
   </li>  
     <li class="nav-item">
-    <a class="nav-link" href="./impressum.html">
+    <a class="nav-link active" href="./impressum.html" aria-current="page">
 <p>Impressum</p>
 </a>
   </li>  

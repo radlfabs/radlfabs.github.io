@@ -14,6 +14,11 @@ about:
       text: Github
       href: https://github.com/radlfabs
 ---
+::: {.callout-note}
+You are visiting an old version of my homepage. 
+Please got to [https://fabianrosenthal.eu](https://fabianrosenthal.eu) for the most recent version instead.
+:::
+
 
 Hi👋, I'm Fabian, a data scientist bridging machine learning and engineering.
 

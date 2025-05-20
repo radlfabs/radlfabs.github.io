@@ -1,1 +1,0 @@
-https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/monthly/kl/historical/monatswerte_KL_02667_19570901_20231231_hist.zip

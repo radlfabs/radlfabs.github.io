@@ -1,1 +1,0 @@
-{"Stadtwald": {"best_params": {"eta": 0.8946783072263093, "gamma": 915, "max_depth": 32, "min_child_weight": 2, "max_delta_step": 91, "subsample": 0.8970355541414288, "colsample_bytree": 0.5613492076995591, "reg_alpha": 177, "reg_lambda": 0}, "best_value": 11433.875539361326}}

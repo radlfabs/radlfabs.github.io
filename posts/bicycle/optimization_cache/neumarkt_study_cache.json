@@ -1,1 +1,0 @@
-{"Neumarkt": {"best_params": {"eta": 0.6636132696796315, "gamma": 981, "max_depth": 45, "min_child_weight": 5, "max_delta_step": 91, "subsample": 0.49591515391665536, "colsample_bytree": 0.18794640687652137, "reg_alpha": 823, "reg_lambda": 168}, "best_value": 18081.217109657482}}

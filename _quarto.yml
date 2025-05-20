@@ -13,17 +13,17 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - href: portfolio.qmd
-        text: Portfolio
-      - href: resume.qmd
-        text: Resume
+        
     right:
       - icon: envelope
         href: mailto:radlfabs@tuta.io
-      - icon: github
-        href: https://github.com/radlfabs
+      - icon: mastodon
+        href: https://mastodon.social/@radlfabs
+        rel:  me
       - icon: linkedin
         href: https://www.linkedin.com/in/fabian-rosenthal-mle
+      - icon: github
+        href: https://github.com/radlfabs
 
   page-footer:
     center: 

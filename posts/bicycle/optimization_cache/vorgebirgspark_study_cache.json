@@ -1,1 +1,0 @@
-{"Vorgebirgspark": {"best_params": {"eta": 0.2958546724227494, "gamma": 144, "max_depth": 41, "min_child_weight": 0, "max_delta_step": 17, "subsample": 0.3485839241056266, "colsample_bytree": 0.4792165155946713, "reg_alpha": 544, "reg_lambda": 671}, "best_value": 5519.405550365393}}

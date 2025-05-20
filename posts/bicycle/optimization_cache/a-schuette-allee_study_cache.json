@@ -1,1 +1,0 @@
-{"A.-Sch\u00fctte-Allee": {"best_params": {"eta": 0.35031047638856927, "gamma": 309, "max_depth": 33, "min_child_weight": 2, "max_delta_step": 44, "subsample": 0.7337229743698497, "colsample_bytree": 0.9683185787429565, "reg_alpha": 494, "reg_lambda": 568}, "best_value": 11874.8856116264}}
